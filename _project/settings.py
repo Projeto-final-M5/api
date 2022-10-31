@@ -101,7 +101,7 @@ DATABASES = {
         "NAME": str(os.getenv("POSTGRES_DB")),
         "USER": str(os.getenv("POSTGRES_USER")),
         "PASSWORD": str(os.getenv("POSTGRES_PASSWORD")),
-        "HOST": "db",
+        "HOST": str(os.getenv("DB_HOST")),
         "PORT": "5432",
     },
     "sqlite3": {
