@@ -6,6 +6,7 @@ from addresses.models import Address
 from .models import User
 from .serializers import UserPostSerializer, UserPatchSerializer, UserDeleteSerializer
 
+
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from .permissions import IsAdmOrOwner
@@ -45,3 +46,4 @@ class UserDeleteView(UpdateAPIView):
             instance._prefetched_objects_cache = {}
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+

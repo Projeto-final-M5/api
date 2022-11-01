@@ -1,7 +1,9 @@
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.authtoken.views import ObtainAuthToken
+
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView
+from rest_framework.authtoken.views import ObtainAuthToken
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),

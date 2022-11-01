@@ -47,7 +47,6 @@ class UserPostSerializer(serializers.ModelSerializer):
 
         return user
 
-
 class UserPatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
