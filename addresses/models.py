@@ -50,8 +50,4 @@ class Address(models.Model):
     )
     additional_data = models.TextField(null=True, blank=True)
 
-
-    user = models.OneToOneField(
-        User,
-        on_delete=models.CASCADE,
-    )
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="address")
