@@ -84,6 +84,25 @@ class UserPostSerializer(serializers.ModelSerializer):
 
     address = AddressSerializer(read_only=True)
     # borrowed = Borrowed()
+    def create(self, validated_data: dict) -> dict:
+        user = User.objects.create_user(**validated_data)
+
+        return user
+    
+
+class UserPatchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        exclude = [
+            "groups",
+            "user_permissions",
+            "is_superuser",
+            "avatar",
+            "password",
+            "id",
+            "last_login",
+        ]
+        read_only_fields = ["is_active"]
 
 
 class LoginSerializer(serializers.Serializer):

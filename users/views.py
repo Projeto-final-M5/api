@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate
 
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, UpdateAPIView
 from rest_framework.views import APIView, Request, Response, status
 from rest_framework.authtoken.models import Token
 from rest_framework.views import Response, status
@@ -8,8 +8,11 @@ from rest_framework.views import Response, status
 from addresses.models import Address
 
 from .models import User
-from .serializers import UserSerializer, UserPostSerializer, LoginSerializer
+from .serializers import UserSerializer, UserPostSerializer, LoginSerializer, UserPatchSerializer
 
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from .permissions import IsAdmOrOwner
 
 class UserView(ListCreateAPIView):
     queryset = User.objects.all()
@@ -19,6 +22,13 @@ class UserView(ListCreateAPIView):
         address = self.request.data.pop("address")
         user = serializer.save()
         Address.objects.create(**address, user=user)
+
+class UserUpdateView(UpdateAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated, IsAdmOrOwner]
+    
+    queryset = User.objects.all()
+    serializer_class = UserPatchSerializer
 
 
 class LoginView(APIView):
