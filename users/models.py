@@ -13,6 +13,7 @@ class User(AbstractUser):
         primary_key=True,
         editable=False,
     )
+
     avatar = models.TextField(
         null=True,
         blank=True,
@@ -25,6 +26,8 @@ class User(AbstractUser):
         default=5,
         editable=False,
     )
+
+    # borrowed = models.ManyToManyField(Borrowed, on_delete=models.CASCADE)
 
     REQUIRED_FIELDS = [
         "email",

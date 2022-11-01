@@ -1,9 +1,8 @@
 from rest_framework import serializers
 
-# from borrowed.models import Borrowed
-# from borrowed.serializer import BorrowedSerializer
-
 from .models import User
+
+from addresses.serializers import AddressSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -38,9 +37,10 @@ class UserSerializer(serializers.ModelSerializer):
             "email": {
                 "write_only": True,
                 "required": True,
-            }
+            },
         }
 
+    address = AddressSerializer(read_only=True)
         # borrowed = BorrowedSerializer()
 
     def create(self, validated_data: dict) -> dict:
@@ -75,21 +75,15 @@ class UserPostSerializer(serializers.ModelSerializer):
                 "required": True,
             },
             "birth": {
-                "write_only": True,
                 "required": True,
             },
             "email": {
-                "write_only": True,
                 "required": True,
-            }
+            },
         }
 
-        # borrowed = Borrowed()
-
-    def create(self, validated_data: dict) -> dict:
-        user = User.objects.create_user(**validated_data)
-
-        return user
+    address = AddressSerializer(read_only=True)
+    # borrowed = Borrowed()
 
 
 class LoginSerializer(serializers.Serializer):
