@@ -37,7 +37,7 @@ class Book(models.Model):
     
     # extra_data = models.OneToOneField("extra_data.Data", on_delete=models.CASCADE, related_name="books")
     # user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="books")
-    # genders = models.ManyToManyField("genders.Gender", related_name="books")
+    genders = models.ManyToManyField("genders.Gender", related_name="books")
     # borrowed = models.ManyToManyField("borroweds.Borrowed", related_name="books")
     
     
