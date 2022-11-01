@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.urls import path, include
-from users.views import LoginView
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView
 from rest_framework.authtoken.views import ObtainAuthToken
 
