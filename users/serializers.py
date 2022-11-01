@@ -105,6 +105,19 @@ class UserPatchSerializer(serializers.ModelSerializer):
         read_only_fields = ["is_active"]
 
 
+class UserDeleteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        
+        fields = "__all__"
+        read_only_fields = ["id", "password", "last_login", "is_superuser", "username", "first_name", "last_name", "is_staff",
+                            "date_joined", "avatar", "email", "birth", "stars", "groups", "user_permissions"
+                            ]
+        extra_kwargs = {
+            "is_active": {'required': True},
+        }
+
+
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(write_only=True)
     password = serializers.CharField(write_only=True)
