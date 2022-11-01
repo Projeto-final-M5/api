@@ -3,9 +3,10 @@ from rest_framework import serializers
 from .models import User
 
 from addresses.serializers import AddressSerializer
+from borroweds.serializers import BorrowedsSerializers
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
 
@@ -31,24 +32,21 @@ class UserSerializer(serializers.ModelSerializer):
                 "required": True,
             },
             "birth": {
-                "write_only": True,
                 "required": True,
             },
             "email": {
-                "write_only": True,
                 "required": True,
             },
         }
 
     address = AddressSerializer(read_only=True)
-        # borrowed = BorrowedSerializer()
+    borrowed = BorrowedsSerializers()
 
     def create(self, validated_data: dict) -> dict:
         user = User.objects.create_user(**validated_data)
 
         return user
 
-    
 class UserPatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -67,12 +65,25 @@ class UserPatchSerializer(serializers.ModelSerializer):
 class UserDeleteSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        
-        fields = "__all__"
-        read_only_fields = ["id", "password", "last_login", "is_superuser", "username", "first_name", "last_name", "is_staff",
-                            "date_joined", "avatar", "email", "birth", "stars", "groups", "user_permissions"
-                            ]
-        extra_kwargs = {
-            "is_active": {'required': True},
-        }
 
+        fields = "__all__"
+        read_only_fields = [
+            "id",
+            "password",
+            "last_login",
+            "is_superuser",
+            "username",
+            "first_name",
+            "last_name",
+            "is_staff",
+            "date_joined",
+            "avatar",
+            "email",
+            "birth",
+            "stars",
+            "groups",
+            "user_permissions",
+        ]
+        extra_kwargs = {
+            "is_active": {"required": True},
+        }

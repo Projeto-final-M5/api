@@ -4,7 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 import uuid
 
-# from borrowed.models import Borrowed
+from borroweds.models import Borrowed
 
 
 class User(AbstractUser):

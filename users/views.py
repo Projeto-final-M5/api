@@ -4,7 +4,7 @@ from rest_framework.views import Response, status
 from addresses.models import Address
 
 from .models import User
-from .serializers import UserSerializer, UserPatchSerializer, UserDeleteSerializer
+from .serializers import UserPostSerializer, UserPatchSerializer, UserDeleteSerializer
 
 
 from rest_framework.authentication import TokenAuthentication
@@ -13,7 +13,7 @@ from .permissions import IsAdmOrOwner
 
 class UserView(ListCreateAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UserPostSerializer
 
     def perform_create(self, serializer):
         address = self.request.data.pop("address")
