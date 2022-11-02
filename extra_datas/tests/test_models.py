@@ -24,7 +24,7 @@ class Extra_DataModelTest(TestCase):
 
         self.assertIsInstance(extra_data, Extra_Data)
         self.assertEqual(extra_data, self.extra_data)
-        
+
         self.assertIsNotNone(id)
         self.assertEqual(id.default, uuid4)
         self.assertTrue(id.primary_key)
@@ -41,5 +41,3 @@ class Extra_DataModelTest(TestCase):
         self.assertIsNone(additional_data.default)
         self.assertTrue(additional_data.null)
         self.assertTrue(additional_data.blank)
-        
-        

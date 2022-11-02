@@ -17,7 +17,7 @@ class UserModelTest(TestCase):
         # cls.borrowed = [Borrowed.objects.create(**cls.borrowed_data) for _ in range(1)]
 
     def test_user_model(self):
-        user = User.objects.get(username="user")
+        user = User.objects.get(id=self.user.id)
 
         id = user._meta.get_field("id")
         username = user._meta.get_field("username")
