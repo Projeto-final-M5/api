@@ -47,10 +47,13 @@ class UserPostSerializer(serializers.ModelSerializer):
 
         return user
 
+
 class UserPatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         exclude = [
+            "first_name",
+            "last_name",
             "groups",
             "user_permissions",
             "is_superuser",
@@ -58,6 +61,7 @@ class UserPatchSerializer(serializers.ModelSerializer):
             "password",
             "id",
             "last_login",
+            "is_active",
         ]
         read_only_fields = ["is_active"]
 
