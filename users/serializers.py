@@ -40,7 +40,7 @@ class UserPostSerializer(serializers.ModelSerializer):
         }
 
     address = AddressSerializer(read_only=True)
-    borrowed = BorrowedsSerializers()
+    # borrowed = BorrowedsSerializers()
 
     def create(self, validated_data: dict) -> dict:
         user = User.objects.create_user(**validated_data)

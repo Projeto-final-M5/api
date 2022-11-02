@@ -44,10 +44,14 @@ class Address(models.Model):
     )
     number = models.CharField(
         max_length=100,
+        null=False,
+        blank=False,
     )
     zip_code = models.CharField(
         max_length=8,
+        null=False,
+        blank=False,
     )
-    additional_data = models.TextField(null=True, blank=True)
+    additional_data = models.TextField(null=True, blank=True,)
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="address")

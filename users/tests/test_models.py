@@ -1,24 +1,19 @@
-from datetime import date, datetime
 from django.test import TestCase
 
 from uuid import uuid4
 
 from users.models import User
 
-from .mock import mock_adm, mock_user
+from .mock import mock_user  # , mock_borrowed
 
 
 class UserModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.adm_data = mock_adm
         cls.user_data = mock_user
-
         # cls.borrowed_data = mock_borrowed
 
         cls.user = User.objects.create_user(**cls.user_data)
-        cls.adm = User.objects.create_superuser(**cls.adm_data)
-
         # cls.borrowed = [Borrowed.objects.create(**cls.borrowed_data) for _ in range(1)]
 
     def test_user_model(self):
@@ -61,8 +56,8 @@ class UserModelTest(TestCase):
 
         # for borrowed in self.borrowed:
         #     self.user.borrowed.add(borrowed)
-            
+
         # self.assertEqual(len(self.borrowed), self.user.borrowed.count())
-        
+
         # for borrowed in self.borrowed:
         #     self.assertIn(self.user, borrowed.users.all())
