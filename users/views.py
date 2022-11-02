@@ -2,9 +2,11 @@ from rest_framework.generics import ListCreateAPIView, UpdateAPIView
 from rest_framework.views import Response, status
 
 from addresses.models import Address
+from addresses.serializers import AddressSerializer
 
 from .models import User
 from .serializers import UserPostSerializer, UserPatchSerializer, UserDeleteSerializer
+
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -16,7 +18,11 @@ class UserView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         address = self.request.data.pop("address")
+        address_serializer = AddressSerializer(data=address)
+        address_serializer.is_valid(raise_exception=True) 
+        
         user = serializer.save()
+
         Address.objects.create(**address, user=user)
 
 class UserUpdateView(UpdateAPIView):
@@ -45,3 +51,4 @@ class UserDeleteView(UpdateAPIView):
             instance._prefetched_objects_cache = {}
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
