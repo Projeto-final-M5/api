@@ -12,6 +12,13 @@ mock_user = {
     "email": "user@user.com",
 }
 
+mock_diff = {
+    "username": "user_diff",
+    "password": "senhaforte",
+    "birth": "2000-08-12",
+    "email": "user@user.com",
+}
+
 mock_address = {
     "district": "Sua Casa",
     "zip_code": "10101010",
@@ -20,11 +27,7 @@ mock_address = {
 }
 
 mock_user_post = {**mock_user, "address": mock_address}
-
-mock_adm_post = {
-    **mock_adm,
-    "address": mock_address,
-}
+mock_diff_post = {**mock_diff}
 
 mock_adm_login = {
     "username": "admin",
@@ -33,6 +36,11 @@ mock_adm_login = {
 
 mock_user_login = {
     "username": "user",
+    "password": "senhaforte",
+}
+
+mock_user_diff_login = {
+    "username": "user_diff",
     "password": "senhaforte",
 }
 
