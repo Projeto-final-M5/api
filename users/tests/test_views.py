@@ -163,6 +163,7 @@ class UserViewTest(APITestCase):
         self.assertEqual(response.status_code, 403)
         self.assertEqual(response.data, data)
 
+
     def test_cant_update_user_with_invalid_user_id(self):
         info = {"email": "new@new.com", "birth": "1990-10-10"}
 
@@ -233,3 +234,4 @@ class UserViewTest(APITestCase):
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.data, data)
+
