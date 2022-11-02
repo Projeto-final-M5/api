@@ -162,3 +162,76 @@ class UserViewTest(APITestCase):
 
         self.assertEqual(response.status_code, 403)
         self.assertEqual(response.data, data)
+
+
+    def test_cant_update_user_with_invalid_user_id(self):
+        info = {"email": "new@new.com", "birth": "1990-10-10"}
+
+        user = self.client.post(self.base_url, self.user_data, format="json")
+        adm_token = self.client.post(self.login, self.adm_login, format="json")
+
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + adm_token.data["token"])
+
+        response = self.client.patch(
+            f"{self.base_url}1/", info, format="json"
+        )
+
+        data = {"detail": "Not found."}
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.data, data)
+
+    def test_can_delete_user_with_same_id(self):
+        user = self.client.post(self.base_url, self.user_data, format="json")
+        user_token = self.client.post(self.login, self.user_login, format="json")
+
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + user_token.data["token"])
+
+        response = self.client.patch(
+            f"{self.base_url}{user.data['id']}/soft", None, format="json"
+        )
+
+        self.assertEqual(response.status_code, 204)
+
+    def test_can_delete_user_with_adm_access(self):
+        user = self.client.post(self.base_url, self.user_data, format="json")
+        adm_token = self.client.post(self.login, self.adm_login, format="json")
+
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + adm_token.data["token"])
+
+        response = self.client.patch(
+            f"{self.base_url}{user.data['id']}/soft", None, format="json"
+        )
+
+        self.assertEqual(response.status_code, 204)
+
+    def test_cant_delete_user_with_wrong_info(self):
+        user = self.client.post(self.base_url, self.user_data, format="json")
+        user_diff = self.client.post(self.login, self.user_diff_login, format="json")
+
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + user_diff.data["token"])
+
+        response = self.client.patch(
+            f"{self.base_url}{user.data['id']}/soft", None, format="json"
+        )
+
+        data = {"detail": "You do not have permission to perform this action."}
+
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.data, data)
+
+    def test_cant_delete_user_with_invalid_id(self):
+        user = self.client.post(self.base_url, self.user_data, format="json")
+        adm_token = self.client.post(self.login, self.adm_login, format="json")
+
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + adm_token.data["token"])
+
+        response = self.client.patch(
+            f"{self.base_url}1/soft", None, format="json"
+        )
+
+        data = {"detail": "Not found."}
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.data, data)
+
