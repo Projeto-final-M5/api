@@ -27,7 +27,7 @@ class BookPostSerializer(serializers.ModelSerializer):
 
         extra_kwargs = {"id": {"read_only": True}}
 
-        extra_data = Extra_DataSerializer(many=True)
+        extra_data = Extra_DataSerializer()
         genders = GenderSerializer(many=True)
 
 
@@ -50,8 +50,8 @@ class BookGetUpdateSerializer(serializers.ModelSerializer):
             # "borrowed",
         ]
 
-        extra_kwargs = {"id": {"read_only": True}, "condition": {"read_only": True}}
+        extra_kwargs = {"id": {"read_only": True},z "condition": {"read_only": True}}
 
-        extra_data = Extra_DataSerializer(many=True)
+        extra_data = Extra_DataSerializer()
         genders = GenderSerializer(many=True)
         borrowed = BorrowedsSerializers(many=True)
