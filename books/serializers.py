@@ -69,3 +69,29 @@ class BookGetUpdateSerializer(serializers.ModelSerializer):
         extra_data = Extra_DataSerializer(many=True)
         genders = GenderSerializer(many=True)
         
+class BookDeleteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+
+        fields = "__all__"
+
+        read_only_fields = [
+            "id",
+            "title",
+            "transaction",
+            "price",
+            "available",
+            "author",
+            "year",
+            "language",
+            "publishing",
+            "condition",
+            "isbn",
+            "extra_data",
+            "user",
+            "genders",
+            "borrowed"
+        ]
+        extra_kwargs = {
+            "isActive": {"required": True},
+        }

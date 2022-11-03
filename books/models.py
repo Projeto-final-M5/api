@@ -34,7 +34,7 @@ class Book(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(10)],
     )
     isbn = models.CharField(max_length=13)   
-    
+    isActive = models.BooleanField(default=True)
 
     extra_data = models.OneToOneField("extra_datas.Extra_Data", on_delete=models.CASCADE, related_name="books", null=True)
 
