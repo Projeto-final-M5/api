@@ -3,7 +3,6 @@ from rest_framework import serializers
 from borroweds.serializers import BorrowedsSerializers
 from extra_datas.serializers import Extra_DataSerializer
 from genders.serializers import GenderSerializer
-from users.serializers import UserSerializer
 from extra_datas.serializers import Extra_DataSerializer
 
 from books.models import Book
