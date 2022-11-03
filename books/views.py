@@ -8,8 +8,10 @@ from .serializers import BookPostSerializer, BookGetUpdateSerializer
 from genders.models import Gender
 from users.models import User
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from extra_datas.models import Extra_Data
+from .permissions import IsAdmOrOwnerBook
+
 
 # Create your views here.
 class BookView(ListCreateAPIView):
@@ -36,8 +38,15 @@ class BookView(ListCreateAPIView):
 class BookGetIdView(RetrieveUpdateAPIView):
 
     authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated,IsAdmOrOwnerBook]
     
+
     queryset = Book.objects.all()
-    serializer_class = BookPostSerializer
+    serializer_class = BookGetUpdateSerializer
+    
+  
+          
+
+   
 
     

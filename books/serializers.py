@@ -54,15 +54,18 @@ class BookGetUpdateSerializer(serializers.ModelSerializer):
             "publishing",
             "condition",
             "isbn",
-            # "extra_data",
+            "extra_data",
             "genders",
             # "borrowed",
         ]
         extra_kwargs = {
             "id": {"read_only": True},
             "condition": {"read_only": True},
+            "genders":{"read_only": True}
         }
         
-        # extra_data = ExtraDataSerializer(many=True)
-        genders = GenderSerializer(many=True)
+        
         borrowed = BorrowedsSerializers(many=True)
+        extra_data = Extra_DataSerializer(many=True)
+        genders = GenderSerializer(many=True)
+        
