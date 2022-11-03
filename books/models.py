@@ -29,14 +29,14 @@ class Book(models.Model):
         choices = Language.choices,
         default = Language.ENGLISH
     )
-    edition = models.CharField(max_length=254)
+    publishing = models.CharField(max_length=254)
     condition = models.PositiveIntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(10)],
     )
     isbn = models.CharField(max_length=13)   
     
-    # extra_data = models.OneToOneField("extra_data.Data", on_delete=models.CASCADE, related_name="books")
-    # user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="books")
+    extra_data = models.OneToOneField("extra_datas.Extra_Data", on_delete=models.CASCADE, related_name="books", null=True)
+    user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="books")
     genders = models.ManyToManyField("genders.Gender", related_name="books")
     # borrowed = models.ManyToManyField("borroweds.Borrowed", related_name="books")
     
