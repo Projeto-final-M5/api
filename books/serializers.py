@@ -3,6 +3,8 @@ from rest_framework import serializers
 from borroweds.serializers import BorrowedsSerializers
 from extra_datas.serializers import Extra_DataSerializer
 from genders.serializers import GenderSerializer
+from users.serializers import UserSerializer
+from extra_datas.serializers import Extra_DataSerializer
 
 from books.models import Book
 
@@ -10,6 +12,7 @@ from books.models import Book
 class BookPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
+
         fields = [
             "id",
             "title",
@@ -18,18 +21,25 @@ class BookPostSerializer(serializers.ModelSerializer):
             "author",
             "price",
             "language",
-            "edition",
+            "publishing",
             "condition",
             "isbn",
-            # "extra_data",
             "genders",
+            "extra_data",
+            "user",
         ]
+        
+        extra_kwargs = {
+            "id": {"read_only": True},
+            "genders":{"read_only": True},
+            "user":{"read_only": True},
+            "extra_data":{"read_only": True},
+        }
+    extra_data = Extra_DataSerializer(read_only=True)
 
-        extra_kwargs = {"id": {"read_only": True}}
-
-        extra_data = Extra_DataSerializer(many=True)
-        genders = GenderSerializer(many=True)
-
+    genders = GenderSerializer(many=True,read_only=True)
+        
+        
 
 class BookGetUpdateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -42,16 +52,18 @@ class BookGetUpdateSerializer(serializers.ModelSerializer):
             "author",
             "price",
             "language",
-            "edition",
+            "publishing",
             "condition",
             "isbn",
             # "extra_data",
             "genders",
             # "borrowed",
         ]
-
-        extra_kwargs = {"id": {"read_only": True}, "condition": {"read_only": True}}
-
-        extra_data = Extra_DataSerializer(many=True)
+        extra_kwargs = {
+            "id": {"read_only": True},
+            "condition": {"read_only": True},
+        }
+        
+        # extra_data = ExtraDataSerializer(many=True)
         genders = GenderSerializer(many=True)
         borrowed = BorrowedsSerializers(many=True)

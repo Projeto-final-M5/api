@@ -11,4 +11,5 @@ urlpatterns = [
     path('api/docs/', SpectacularRedocView.as_view(url_name='schema')),
     path("api/users/", include("users.urls")),
     path("api/login/", ObtainAuthToken.as_view(), name="login"),
+    path("api/", include("books.urls")),
 ]
