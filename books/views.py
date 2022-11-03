@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
 from rest_framework.views import Response, status
 from django.shortcuts import get_object_or_404
 
@@ -33,5 +33,11 @@ class BookView(ListCreateAPIView):
             gender , _ = Gender.objects.get_or_create(**item)        
             gender.books.add(book)
 
+class BookGetIdView(RetrieveUpdateAPIView):
+
+    authentication_classes = [TokenAuthentication]
+    
+    queryset = Book.objects.all()
+    serializer_class = BookPostSerializer
 
     
