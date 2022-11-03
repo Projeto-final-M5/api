@@ -13,5 +13,13 @@ class AddressSerializer(serializers.ModelSerializer):
             "id": {
                 "read_only": True,
             },
+            "number": {
+                "required": True,
+            },
+            "zip_code": {
+                "required": True,
+            },
+            "user": {  # REVISAR SE ISSO FAZ SENTIDO, mas será preciso para validar os testes de criação de usuário com dados inválidos do address
+                "required": False,
+            },
         }
-        

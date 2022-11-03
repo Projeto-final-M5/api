@@ -1,9 +1,13 @@
 from rest_framework import serializers
 
-from books.models import Book
+from borroweds.serializers import BorrowedsSerializers
+from extra_datas.serializers import Extra_DataSerializer
 from genders.serializers import GenderSerializer
 from users.serializers import UserSerializer
 from extra_datas.serializers import Extra_DataSerializer
+
+from books.models import Book
+
 
 class BookPostSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,6 +40,7 @@ class BookPostSerializer(serializers.ModelSerializer):
     genders = GenderSerializer(many=True,read_only=True)
         
         
+
 class BookGetUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
@@ -54,7 +59,6 @@ class BookGetUpdateSerializer(serializers.ModelSerializer):
             "genders",
             # "borrowed",
         ]
-        
         extra_kwargs = {
             "id": {"read_only": True},
             "condition": {"read_only": True},
@@ -62,4 +66,4 @@ class BookGetUpdateSerializer(serializers.ModelSerializer):
         
         # extra_data = ExtraDataSerializer(many=True)
         genders = GenderSerializer(many=True)
-        # borrowed = BorrowedSerializer(many=True)
+        borrowed = BorrowedsSerializers(many=True)

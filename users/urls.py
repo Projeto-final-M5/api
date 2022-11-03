@@ -6,6 +6,6 @@ from . import views
 
 urlpatterns = [
     path("", views.UserView.as_view(), name="users"),
-    path('<pk>/', views.UserUpdateView.as_view()),
+    path('<pk>/', views.UserUpdateView.as_view(), name="users_patch"),
     path('<pk>/soft', views.UserDeleteView.as_view()),
 ]
