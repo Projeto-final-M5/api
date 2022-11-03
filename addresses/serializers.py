@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Address, AddressState, AddressCity, AddressPlace
+from .models import Address
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -23,3 +23,19 @@ class AddressSerializer(serializers.ModelSerializer):
                 "required": False,
             },
         }
+
+
+class AddressDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        fields = [
+            "id",
+            "state",
+            "city",
+            "district",
+            "place",
+            "number",
+            "zip_code",
+            "additional_data",
+        ]
+        read_only_fields = ["id"]
