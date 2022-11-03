@@ -52,7 +52,7 @@ class BookGetUpdateSerializer(serializers.ModelSerializer):
             "publishing",
             "condition",
             "isbn",
-            # "extra_data",
+            "extra_data",
             "genders",
             # "borrowed",
         ]
@@ -60,8 +60,36 @@ class BookGetUpdateSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             "id": {"read_only": True},
             "condition": {"read_only": True},
+            "genders":{"read_only": True}
         }
 
-        # extra_data = ExtraDataSerializer()
-        genders = GenderSerializer(many=True)
         borrowed = BorrowedsSerializers(many=True)
+        extra_data = Extra_DataSerializer(many=True)
+        genders = GenderSerializer(many=True)
+        
+class BookDeleteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+
+        fields = "__all__"
+
+        read_only_fields = [
+            "id",
+            "title",
+            "transaction",
+            "price",
+            "available",
+            "author",
+            "year",
+            "language",
+            "publishing",
+            "condition",
+            "isbn",
+            "extra_data",
+            "user",
+            "genders",
+            "borrowed"
+        ]
+        extra_kwargs = {
+            "isActive": {"required": True},
+        }

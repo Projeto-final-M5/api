@@ -6,6 +6,6 @@ from . import views
 
 urlpatterns = [
     path('book/', views.BookView.as_view()),
-    path('book/<pk>/', views.BookGetIdView.as_view()),
-    #path('<pk>/soft', views.UserDeleteView.as_view()),
+    path('book/<pk>/', views.BookGetPacthDeleteIdView.as_view()),
+    path('book/<pk>/soft', views.BookDeleteView.as_view()),
 ]
