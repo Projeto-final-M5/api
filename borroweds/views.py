@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import CreateAPIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
@@ -11,7 +11,7 @@ from books.models import Book
 from .permissions import isNotOwner
 
 
-class BorrrowedListCreateView(ListCreateAPIView):
+class BorrrowedCreateView(CreateAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated, isNotOwner]
 
