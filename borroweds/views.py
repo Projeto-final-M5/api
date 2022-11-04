@@ -2,27 +2,26 @@ from django.shortcuts import render
 
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 
 from .serializers import BorrowedsSerializers
 from .models import Borrowed
 from books.models import Book
-from utils.validation_error import CustomForbidenError
+from .permissions import isNotOwner
 
 
 class BorrrowedListCreateView(ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = []
+    permission_classes = [IsAuthenticated, isNotOwner]
 
     queryset = Borrowed.objects.all()
     serializer_class = BorrowedsSerializers
 
     def perform_create(self, serializer):
-        book_instamce = get_object_or_404(Book, id=self.kwargs["pk"])
-        if book_instamce.available is False:
-            raise CustomForbidenError("This book is not available")
+        book_instance = get_object_or_404(Book, id=self.kwargs["pk"])
 
-        book_instamce.available = False
-        book_instamce.save()
+        book_instance.available = False
+        book_instance.save()
 
-        return serializer.save(book=book_instamce, user=self.request.user)
+        return serializer.save(book=book_instance, user=self.request.user)

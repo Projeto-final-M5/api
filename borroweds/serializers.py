@@ -1,9 +1,6 @@
 from rest_framework import serializers
 from borroweds.models import Borrowed
 
-# from users.serializers import UserPostSerializer
-# from books.serializers import BookPostSerializer
-
 
 class BorrowedsSerializers(serializers.ModelSerializer):
     class Meta:
@@ -16,4 +13,9 @@ class BorrowedsSerializers(serializers.ModelSerializer):
             "user_id",
             "book_id",
         ]
-        read_only_fields = ["id"]
+        read_only_fields = [
+            "id",
+            "initial_date",
+            "user_id",
+            "book_id"
+        ]
