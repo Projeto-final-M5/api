@@ -13,3 +13,4 @@ class Picture(models.Model):
         null=True,
         blank=True,
     )
+    

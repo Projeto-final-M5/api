@@ -1,10 +1,19 @@
 from django.shortcuts import render
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView,RetrieveUpdateDestroyAPIView, UpdateAPIView
+from rest_framework.generics import (
+    ListCreateAPIView,
+    RetrieveUpdateAPIView,
+    RetrieveUpdateDestroyAPIView,
+    UpdateAPIView,
+)
 from rest_framework.views import Response, status
 from django.shortcuts import get_object_or_404
 
-from .models import  Book
-from .serializers import BookPostSerializer, BookGetUpdateSerializer, BookDeleteSerializer
+from .models import Book
+from .serializers import (
+    BookPostSerializer,
+    BookGetUpdateSerializer,
+    BookDeleteSerializer,
+)
 from genders.models import Gender
 from users.models import User
 from rest_framework.authentication import TokenAuthentication
@@ -23,36 +32,31 @@ class BookView(ListCreateAPIView):
 
     def perform_create(self, serializer):
 
-        genders = self.request.data.pop('genders')
-
-        extra = self.request.data.pop('extra_data')
-        
+        genders = self.request.data.pop("genders")
         book = serializer.save(user=self.request.user)
 
-        Extra_Data.objects.create(**extra, books=book)
+        if "extra_data" in self.request.data.keys():
+            extra = self.request.data.pop("extra_data")
+            Extra_Data.objects.create(**extra, book=book)
 
         for item in genders:
-            gender , _ = Gender.objects.get_or_create(**item)        
+            gender, _ = Gender.objects.get_or_create(**item)
             gender.books.add(book)
+
 
 class BookGetPacthDeleteIdView(RetrieveUpdateDestroyAPIView):
 
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated,IsAdmOrOwnerBook]
-    
+    permission_classes = [IsAuthenticated, IsAdmOrOwnerBook]
 
     queryset = Book.objects.all()
     serializer_class = BookGetUpdateSerializer
-    
-  
-          
+
+
 class BookDeleteView(UpdateAPIView):
 
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated,IsAdmOrOwnerBook]
-    
+    permission_classes = [IsAuthenticated, IsAdmOrOwnerBook]
 
     queryset = Book.objects.all()
     serializer_class = BookDeleteSerializer
-
-    

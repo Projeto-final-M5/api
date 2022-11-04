@@ -3,7 +3,6 @@ from rest_framework import serializers
 from .models import User
 
 from addresses.serializers import AddressSerializer
-from borroweds.serializers import BorrowedsSerializers
 
 
 class UserPostSerializer(serializers.ModelSerializer):
@@ -37,10 +36,12 @@ class UserPostSerializer(serializers.ModelSerializer):
             "email": {
                 "required": True,
             },
+            "address": {
+                "required": True,
+            },
         }
 
     address = AddressSerializer(read_only=True)
-    # borrowed = BorrowedsSerializers()
 
     def create(self, validated_data: dict) -> dict:
         user = User.objects.create_user(**validated_data)

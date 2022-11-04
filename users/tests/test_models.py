@@ -4,17 +4,15 @@ from uuid import uuid4
 
 from users.models import User
 
-from .mock import mock_user  # , mock_borrowed
+from .mock import mock_user
 
 
 class UserModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user_data = mock_user
-        # cls.borrowed_data = mock_borrowed
 
         cls.user = User.objects.create_user(**cls.user_data)
-        # cls.borrowed = [Borrowed.objects.create(**cls.borrowed_data) for _ in range(1)]
 
     def test_user_model(self):
         user = User.objects.get(id=self.user.id)
@@ -25,8 +23,6 @@ class UserModelTest(TestCase):
         email = user._meta.get_field("email")
         birth = user._meta.get_field("birth")
         stars = user._meta.get_field("stars")
-
-        # borrowed = user._meta.get_field("borrowed")
 
         self.assertIsInstance(user, User)
         self.assertEqual(user, self.user)
@@ -53,11 +49,3 @@ class UserModelTest(TestCase):
 
         self.assertEqual(stars.default, 5)
         self.assertFalse(stars.editable)
-
-        # for borrowed in self.borrowed:
-        #     self.user.borrowed.add(borrowed)
-
-        # self.assertEqual(len(self.borrowed), self.user.borrowed.count())
-
-        # for borrowed in self.borrowed:
-        #     self.assertIn(self.user, borrowed.users.all())

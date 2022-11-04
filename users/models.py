@@ -27,8 +27,6 @@ class User(AbstractUser):
         editable=False,
     )
 
-    # borrowed = models.ManyToManyField(Borrowed, on_delete=models.CASCADE, related_name='users')
-
     REQUIRED_FIELDS = [
         "email",
         "birth",

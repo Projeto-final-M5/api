@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from borroweds.serializers import BorrowedsSerializers
+# from borroweds.serializers import BorrowedsSerializers
 from extra_datas.serializers import Extra_DataSerializer
 from genders.serializers import GenderSerializer
 from extra_datas.serializers import Extra_DataSerializer
@@ -25,13 +25,14 @@ class BookPostSerializer(serializers.ModelSerializer):
             "isbn",
             "genders",
             "user",
+            "extra_data",
         ]
 
         extra_kwargs = {
             "id": {"read_only": True},
             "genders": {"read_only": True},
             "user": {"read_only": True},
-            "extra_data": {"read_only": True},
+            # "extra_data": {"read_only": True},
         }
 
     extra_data = Extra_DataSerializer(read_only=True)
@@ -54,7 +55,6 @@ class BookGetUpdateSerializer(serializers.ModelSerializer):
             "isbn",
             "extra_data",
             "genders",
-            # "borrowed",
         ]
 
         extra_kwargs = {
@@ -63,7 +63,7 @@ class BookGetUpdateSerializer(serializers.ModelSerializer):
             "genders":{"read_only": True}
         }
 
-        borrowed = BorrowedsSerializers(many=True)
+        # borrowed = BorrowedsSerializers(many=True)
         extra_data = Extra_DataSerializer(many=True)
         genders = GenderSerializer(many=True)
         
@@ -88,7 +88,7 @@ class BookDeleteSerializer(serializers.ModelSerializer):
             "extra_data",
             "user",
             "genders",
-            "borrowed"
+            # "borrowed"
         ]
         extra_kwargs = {
             "isActive": {"required": True},

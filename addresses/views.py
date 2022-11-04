@@ -15,3 +15,6 @@ class AddressDetailView(RetrieveUpdateAPIView):
     queryset = Address.objects.all()
 
     serializer_class = AddressDetailSerializer
+
+    lookup_field = 'user'
+    lookup_url_kwarg = 'pk'
