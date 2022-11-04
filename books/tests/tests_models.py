@@ -17,7 +17,8 @@ class BookModelTest(TestCase):
             "available": True,
             "author": "Miguel de Cervantes Saavedra",
             "year": "1604",
-            "edition": "Unova",
+            # "edition": "Unova",
+            # tirar edition, colocar publishing
             "condition": 5,
             "isbn": "9788525433633"
         }
@@ -57,10 +58,10 @@ class BookModelTest(TestCase):
             self.book.year,
             self.book_data["year"]
         )
-        self.assertEqual(
-            self.book.edition,
-            self.book_data["edition"]
-        )
+        # self.assertEqual( publishing
+        #     self.book.edition,
+        #     self.book_data["edition"]
+        # )
         self.assertEqual(
             self.book.condition,
             self.book_data["condition"]
