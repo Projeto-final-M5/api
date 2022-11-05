@@ -3,6 +3,15 @@ on:
   push:
     branches: ["main", "develop"]
 jobs:
+  services:
+  postgres:
+    image: postgres
+    env:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: github-actions
+    ports:
+      - 5432:5432
   build:
     runs-on: ubuntu-latest
     steps:
