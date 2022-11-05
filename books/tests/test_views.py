@@ -4,8 +4,6 @@ from rest_framework.test import APITestCase
 
 from users.models import User
 from users.tests.mocks import mock_user, mock_diff, mock_user_login, mock_user_diff_login
-
-from books.models import Book
 from .mocks import mock_book, mock_extra_data, mock_genders
 
 
@@ -38,7 +36,7 @@ class BookViewTest(APITestCase):
             {
                 **self.book_data,
                 "user": self.user_data,
-                "extra_data": self.extra_data_data,
+                # "extra_data": self.extra_data_data,
                 "genders": self.gender_data,
             },
             format="json",
@@ -82,7 +80,7 @@ class BookViewTest(APITestCase):
             self.base_url,
             {
                 **self.book_data,
-                "extra_data": self.extra_data_data,
+                # "extra_data": self.extra_data_data,
                 "user": self.user_data,
             },
             format="json",
@@ -106,7 +104,7 @@ class BookViewTest(APITestCase):
             {
                 **self.book_data,
                 "user": self.user_data,
-                "extra_data": self.extra_data_data,
+                # "extra_data": self.extra_data_data,
                 "genders": self.gender_data,
             },
             format="json",
@@ -136,7 +134,7 @@ class BookViewTest(APITestCase):
             {
                 **self.book_data,
                 "user": self.user_data,
-                "extra_data": self.extra_data_data,
+                # "extra_data": self.extra_data_data,
                 "genders": self.gender_data,
             },
             format="json",
