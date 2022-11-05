@@ -4,7 +4,7 @@ from rest_framework.test import APITestCase
 
 from users.models import User
 
-from .mock import (
+from .mocks import (
     mock_user,
     mock_adm,
     mock_diff,

@@ -4,7 +4,7 @@ from uuid import uuid4
 
 from users.models import User
 
-from .mock import mock_user
+from .mocks import mock_user
 
 
 class UserModelTest(TestCase):
