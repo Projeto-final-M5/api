@@ -33,13 +33,6 @@ class Book(models.Model):
     isbn = models.CharField(max_length=13)
     isActive = models.BooleanField(default=True)
 
-    extra_data = models.OneToOneField(
-        "extra_datas.Extra_Data",
-        on_delete=models.CASCADE,
-        related_name="book",
-        null=True,
-    )
-
     user = models.ForeignKey(
         "users.User",
         on_delete=models.CASCADE,
