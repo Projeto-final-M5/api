@@ -31,7 +31,6 @@ class BookView(ListCreateAPIView):
     serializer_class = BookPostSerializer
 
     def perform_create(self, serializer):
-
         genders = self.request.data.pop("genders")
         book = serializer.save(user=self.request.user)
 
@@ -41,7 +40,11 @@ class BookView(ListCreateAPIView):
 
         for item in genders:
             gender, _ = Gender.objects.get_or_create(**item)
-            gender.books.add(book)
+            book.genders.add(gender)
+
+        # for item in genders:
+        #     gender, _ = Gender.objects.get_or_create(**item)
+        #     gender.books.add(book)
 
 
 class BookGetPacthDeleteIdView(RetrieveUpdateDestroyAPIView):

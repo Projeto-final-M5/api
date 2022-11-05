@@ -14,4 +14,4 @@ class Gender(models.Model):
         max_length=100,
         choices = Gender.choices,
         default = Gender.DEFAULT
-    ) #reavaliar
+    ) 

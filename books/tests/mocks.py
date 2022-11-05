@@ -10,4 +10,5 @@ mock_book = {
     "isbn": "9788525433633",
 }
 
+mock_genders = [{"genders": "Action"}]
 mock_extra_data = {"translated": True}
