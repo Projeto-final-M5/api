@@ -1,3 +1,5 @@
+from addresses.tests.mocks import mock_address
+
 mock_adm = {
     "username": "admin",
     "password": "senhaforte",
@@ -17,13 +19,6 @@ mock_diff = {
     "password": "senhaforte",
     "birth": "2000-08-12",
     "email": "user@user.com",
-}
-
-mock_address = {
-    "district": "Sua Casa",
-    "zip_code": "10101010",
-    "number": "31C",
-    "additional_data": "informações adicionais",
 }
 
 mock_user_post = {**mock_user, "address": mock_address}

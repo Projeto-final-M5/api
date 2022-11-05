@@ -1,12 +1,13 @@
 from rest_framework.generics import ListCreateAPIView, UpdateAPIView
 from rest_framework.views import Response, status
 
+from utils.validation_error import CustomForbidenError
+
 from addresses.models import Address
 from addresses.serializers import AddressSerializer
 
 from .models import User
 from .serializers import UserPostSerializer, UserPatchSerializer, UserDeleteSerializer
-
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -18,6 +19,9 @@ class UserView(ListCreateAPIView):
     serializer_class = UserPostSerializer
 
     def perform_create(self, serializer):
+        if "address" not in self.request.data.keys():
+            raise CustomForbidenError({"address": ["This field is required."]})
+        
         address = self.request.data.pop("address")
         address_serializer = AddressSerializer(data=address)
         address_serializer.is_valid(raise_exception=True)

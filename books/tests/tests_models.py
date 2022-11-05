@@ -4,27 +4,16 @@ from books.models import Book
 from users.models import User
 from extra_datas.models import Extra_Data
 
-from users.tests.mock import mock_user
+from users.tests.mocks import mock_user
 
+from .mocks import mock_book, mock_extra_data
 
 class BookModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.book_data = {
-            "title": "Don Quixote",
-            "transaction": "Sale",
-            "price": 20.00,
-            "available": True,
-            "author": "Miguel de Cervantes Saavedra",
-            "year": "1604",
-            # "edition": "Unova",
-            # tirar edition, colocar publishing
-            "condition": 5,
-            "isbn": "9788525433633"
-        }
-        cls.extra_data = {
-            "translated": True
-        }
+        cls.book_data = mock_book
+        cls.extra_data = mock_extra_data
+        
         cls.extra = Extra_Data.objects.create(**cls.extra_data)
         cls.user = User.objects.create(**mock_user)
         cls.book = Book.objects.create(

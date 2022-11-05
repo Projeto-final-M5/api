@@ -18,6 +18,7 @@ class BookPostSerializer(serializers.ModelSerializer):
             "transaction",
             "available",
             "author",
+            "year",
             "price",
             "language",
             "publishing",
@@ -32,7 +33,6 @@ class BookPostSerializer(serializers.ModelSerializer):
             "id": {"read_only": True},
             "genders": {"read_only": True},
             "user": {"read_only": True},
-            # "extra_data": {"read_only": True},
         }
 
     extra_data = Extra_DataSerializer(read_only=True)
@@ -60,13 +60,14 @@ class BookGetUpdateSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             "id": {"read_only": True},
             "condition": {"read_only": True},
-            "genders":{"read_only": True}
+            "genders": {"read_only": True},
         }
 
         # borrowed = BorrowedsSerializers(many=True)
         extra_data = Extra_DataSerializer(many=True)
         genders = GenderSerializer(many=True)
-        
+
+
 class BookDeleteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
