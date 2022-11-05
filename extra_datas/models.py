@@ -23,3 +23,9 @@ class Extra_Data(models.Model):
     translated = models.BooleanField(
         default=False,
     )
+
+    book = models.OneToOneField(
+        "books.Book",
+        on_delete=models.CASCADE,
+        related_name="extra_data",
+    )
