@@ -43,7 +43,7 @@ class BorrowedViewTest(APITestCase):
             {
                 **self.book_data,
                 "user": self.user_data,
-                "extra_data": self.extra_data_data,
+                # "extra_data": self.extra_data_data,
                 "genders": self.gender_data,
             },
             format="json",
@@ -80,7 +80,7 @@ class BorrowedViewTest(APITestCase):
             {
                 **self.book_data,
                 "user": self.user_data,
-                "extra_data": self.extra_data_data,
+                # "extra_data": self.extra_data_data,
                 "genders": self.gender_data,
             },
             format="json",
@@ -117,7 +117,7 @@ class BorrowedViewTest(APITestCase):
             {
                 **self.book_data,
                 "user": self.user_data,
-                "extra_data": self.extra_data_data,
+                # "extra_data": self.extra_data_data,
                 "genders": self.gender_data,
             },
             format="json",

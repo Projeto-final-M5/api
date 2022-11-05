@@ -14,13 +14,12 @@ class BookModelTest(TestCase):
         cls.book_data = mock_book
         cls.extra_data = mock_extra_data
         
-        cls.extra = Extra_Data.objects.create(**cls.extra_data)
         cls.user = User.objects.create(**mock_user)
         cls.book = Book.objects.create(
             **cls.book_data,
-            extra_data=cls.extra,
-            user=cls.user
+        user=cls.user
         )
+        cls.extra = Extra_Data.objects.create(**{**cls.extra_data, "book":cls.book})
 
     def test_fields(self):
         self.assertEqual(
@@ -47,10 +46,10 @@ class BookModelTest(TestCase):
             self.book.year,
             self.book_data["year"]
         )
-        # self.assertEqual( publishing
-        #     self.book.edition,
-        #     self.book_data["edition"]
-        # )
+        self.assertEqual(
+            self.book.publishing,
+            self.book_data["publishing"]
+        )
         self.assertEqual(
             self.book.condition,
             self.book_data["condition"]
