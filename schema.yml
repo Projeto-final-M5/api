@@ -221,6 +221,40 @@ paths:
               schema:
                 $ref: '#/components/schemas/BookDelete'
           description: ''
+  /api/borrowed/{id}/book/:
+    post:
+      operationId: api_borrowed_book_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this borrowed.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BorrowedsSerializers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BorrowedsSerializers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BorrowedsSerializers'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BorrowedsSerializers'
+          description: ''
   /api/login/:
     post:
       operationId: api_login_create
@@ -641,11 +675,6 @@ components:
           readOnly: true
         isActive:
           type: boolean
-        extra_data:
-          type: string
-          format: uuid
-          readOnly: true
-          nullable: true
         user:
           type: string
           format: uuid
@@ -656,18 +685,10 @@ components:
             type: string
             format: uuid
           readOnly: true
-        borrowed:
-          type: array
-          items:
-            type: string
-            format: uuid
-          readOnly: true
       required:
       - author
       - available
-      - borrowed
       - condition
-      - extra_data
       - genders
       - id
       - isActive
@@ -713,7 +734,6 @@ components:
         extra_data:
           type: string
           format: uuid
-          nullable: true
         genders:
           type: array
           items:
@@ -723,6 +743,7 @@ components:
       required:
       - author
       - condition
+      - extra_data
       - genders
       - id
       - isbn
@@ -745,6 +766,9 @@ components:
         author:
           type: string
           maxLength: 100
+        year:
+          type: string
+          maxLength: 4
         price:
           type: string
           format: decimal
@@ -785,6 +809,38 @@ components:
       - publishing
       - title
       - user
+      - year
+    BorrowedsSerializers:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        initial_date:
+          type: string
+          format: date
+          readOnly: true
+        finish_date:
+          type: string
+          format: date
+          nullable: true
+        shipping_method:
+          $ref: '#/components/schemas/ShippingMethodEnum'
+        user_id:
+          type: string
+          format: uuid
+          readOnly: true
+        book_id:
+          type: string
+          format: uuid
+          readOnly: true
+      required:
+      - book_id
+      - id
+      - initial_date
+      - shipping_method
+      - user_id
     Extra_Data:
       type: object
       properties:
@@ -801,7 +857,11 @@ components:
           maxLength: 100
         translated:
           type: boolean
+        book:
+          type: string
+          format: uuid
       required:
+      - book
       - id
     Gender:
       type: object
@@ -935,22 +995,11 @@ components:
           readOnly: true
         isActive:
           type: boolean
-        extra_data:
-          type: string
-          format: uuid
-          readOnly: true
-          nullable: true
         user:
           type: string
           format: uuid
           readOnly: true
         genders:
-          type: array
-          items:
-            type: string
-            format: uuid
-          readOnly: true
-        borrowed:
           type: array
           items:
             type: string
@@ -990,7 +1039,6 @@ components:
         extra_data:
           type: string
           format: uuid
-          nullable: true
         genders:
           type: array
           items:
@@ -1100,6 +1148,11 @@ components:
     PlaceEnum:
       enum:
       - None
+      type: string
+    ShippingMethodEnum:
+      enum:
+      - Correio
+      - Retirada
       type: string
     TransactionEnum:
       enum:
