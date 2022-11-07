@@ -12,6 +12,7 @@ class Borrowed(models.Model):
     initial_date = models.DateField(auto_now_add=True)
     finish_date = models.DateField(null=True)
     shipping_method = models.CharField(max_length=100, choices=Options.choices)
+    total_price = models.DecimalField(max_digits=6, decimal_places=2, null=True)
 
     user = models.ForeignKey(
         "users.User",
