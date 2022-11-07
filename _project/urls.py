@@ -14,4 +14,5 @@ urlpatterns = [
     path("api/login/", ObtainAuthToken.as_view(), name="login"),
     path("api/", include("books.urls")),
     path("api/", include("borroweds.urls")),
+    path("api/", include("feed_back.urls")),
 ]
