@@ -12,11 +12,11 @@ urlpatterns = [
         views.GetFeedBack.as_view(),
     ),
     path(
-        "feedback/<user_id>/user",
+        "feedback/<user_id>/user/",
         views.GetUserFeedBack.as_view(),
     ),
     path(
-        "feedback/<book_id>/book",
+        "feedback/<book_id>/book/",
         views.GetBookFeedBack.as_view(),
     ),
     path(
