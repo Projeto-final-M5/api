@@ -2,7 +2,8 @@ build:
   docker:
     web: Dockerfile
 release:
+  command:
+    - python manage.py migrate
   image: web
-  command: python manage.py migrate
 run:
   web: python manage.py runserver 0.0.0.0:$PORT
