@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from datetime import datetime as dt, timezone
 
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.authentication import TokenAuthentication
@@ -22,10 +22,15 @@ class BorrrowedCreateView(CreateAPIView):
     def perform_create(self, serializer):
         book_instance = get_object_or_404(Book, id=self.kwargs["pk"])
 
+  
         book_instance.available = False
         book_instance.save()
+        
+        data_now = dt.now(timezone.utc).date()
+        data = dt.strptime(self.request.data["finish_date"], '%Y-%m-%d').date() - data_now
+        total_price = data.days * book_instance.price 
 
-        return serializer.save(book=book_instance, user=self.request.user)
+        return serializer.save(book=book_instance, user=self.request.user, total_price=total_price)
     
 class BorrrowedDevolutionView(UpdateAPIView):
     authentication_classes = [TokenAuthentication]

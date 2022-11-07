@@ -12,9 +12,11 @@ class BorrowedsSerializers(serializers.ModelSerializer):
             "shipping_method",
             "user_id",
             "book_id",
+            "total_price"
         ]
         read_only_fields = [
             "id",
+            "total_price"
             "initial_date",
             "user_id",
             "book_id"
