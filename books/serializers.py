@@ -59,8 +59,9 @@ class BookGetUpdateSerializer(serializers.ModelSerializer):
 
         extra_kwargs = {
             "id": {"read_only": True},
-            "condition": {"read_only": True},
             "genders": {"read_only": True},
+            "extra_data": {"read_only": True},
+            
         }
 
         # borrowed = BorrowedsSerializers(many=True)
