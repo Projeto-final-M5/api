@@ -42,9 +42,6 @@ class BookView(ListCreateAPIView):
 
         book = serializer.save(user=self.request.user)
 
-        
-    
-        
         extra = self.request.data.pop("extra_data")
 
         extraSerializer = Extra_DataSerializer(data=extra)
@@ -54,11 +51,10 @@ class BookView(ListCreateAPIView):
         
         genders = self.request.data.pop("genders")
 
-        genderSerializer = GenderSerializer
         for item in genders:
             genderSerializer = GenderSerializer(data=item)
             genderSerializer.is_valid(raise_exception=True)
-            
+
             gender, _ = Gender.objects.get_or_create(**item)
             book.genders.add(gender)
 
@@ -81,6 +77,9 @@ class BookGetPacthDeleteIdView(RetrieveUpdateDestroyAPIView):
 
         if "extra_data" in self.request.data.keys():
             extra = self.request.data.pop("extra_data")
+            extraSerializer = Extra_DataSerializer(data=extra)
+            extraSerializer.is_valid(raise_exception=True)
+
             Extra_Data.objects.update(**extra)
 
         if "genders" in self.request.data.keys():
@@ -88,6 +87,8 @@ class BookGetPacthDeleteIdView(RetrieveUpdateDestroyAPIView):
             book.genders.clear()
 
             for item in genders:
+                genderSerializer = GenderSerializer(data=item)
+                genderSerializer.is_valid(raise_exception=True)
                 gender, _ = Gender.objects.get_or_create(**item)
                 book.genders.add(gender)
 
