@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
@@ -25,3 +25,17 @@ class BorrrowedCreateView(CreateAPIView):
         book_instance.save()
 
         return serializer.save(book=book_instance, user=self.request.user)
+
+
+class BorrrowedListView(ListAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = Borrowed.objects.all()
+    serializer_class = BorrowedsSerializers
+
+
+class BorrrowedDatailView(RetrieveAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = Borrowed.objects.all()
+    serializer_class = BorrowedsSerializers

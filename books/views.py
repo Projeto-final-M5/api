@@ -54,7 +54,24 @@ class BookGetPacthDeleteIdView(RetrieveUpdateDestroyAPIView):
 
     queryset = Book.objects.all()
     serializer_class = BookGetUpdateSerializer
+    
+    def get_serializer(self, *args, **kwargs):
+        book = self.get_object()
+        print(book)
 
+        if "extra_data" in self.request.data.keys():
+            extra = self.request.data.pop("extra_data")
+            Extra_Data.objects.update(**extra)
+
+        if "genders" in self.request.data.keys():
+            genders = self.request.data.pop("genders")
+            book.genders.clear()
+
+            for item in genders:
+                gender, _ = Gender.objects.get_or_create(**item)
+                book.genders.add(gender)
+
+        return super().get_serializer(*args, **kwargs)
 
 class BookDeleteView(UpdateAPIView):
 
@@ -63,3 +80,4 @@ class BookDeleteView(UpdateAPIView):
 
     queryset = Book.objects.all()
     serializer_class = BookDeleteSerializer
+
