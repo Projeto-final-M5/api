@@ -3,7 +3,12 @@ from django.urls import reverse
 from rest_framework.test import APITestCase
 
 from users.models import User
-from users.tests.mocks import mock_user, mock_diff, mock_user_login, mock_user_diff_login
+from users.tests.mocks import (
+    mock_user,
+    mock_diff,
+    mock_user_login,
+    mock_user_diff_login,
+)
 from .mocks import mock_book, mock_extra_data, mock_genders
 
 
@@ -36,12 +41,11 @@ class BookViewTest(APITestCase):
             {
                 **self.book_data,
                 "user": self.user_data,
-                # "extra_data": self.extra_data_data,
+                "extra_data": self.extra_data_data,
                 "genders": self.gender_data,
             },
             format="json",
         )
-
         data = {
             **response.data,
             **self.book_data,
@@ -104,7 +108,7 @@ class BookViewTest(APITestCase):
             {
                 **self.book_data,
                 "user": self.user_data,
-                # "extra_data": self.extra_data_data,
+                "extra_data": self.extra_data_data,
                 "genders": self.gender_data,
             },
             format="json",
@@ -146,7 +150,7 @@ class BookViewTest(APITestCase):
         response = self.client.get(f"/api/book/{book.data['id']}/", format="json")
 
         data = {"detail": "You do not have permission to perform this action."}
-        
+
         self.assertEqual(response.status_code, 403)
         self.assertEqual(response.data, data)
 

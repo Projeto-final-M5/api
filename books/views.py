@@ -20,6 +20,9 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from extra_datas.models import Extra_Data
 from .permissions import IsAdmOrOwnerBook
+from utils.validation_error import CustomForbidenError
+from extra_datas.serializers import Extra_DataSerializer
+from genders.serializers import GenderSerializer,GenderSerializerChoices
 
 
 # Create your views here.
@@ -31,14 +34,27 @@ class BookView(ListCreateAPIView):
     serializer_class = BookPostSerializer
 
     def perform_create(self, serializer):
-        genders = self.request.data.pop("genders")
+        if "genders" not in self.request.data.keys():
+            raise CustomForbidenError({"genders":["This camp is required."]})
+        
+        if "extra_data" not in self.request.data.keys():
+            raise CustomForbidenError({"extra_data":["This camp is required."]})
+
         book = serializer.save(user=self.request.user)
 
-        if "extra_data" in self.request.data.keys():
-            extra = self.request.data.pop("extra_data")
-            Extra_Data.objects.create(**extra, book=book)
+        extra = self.request.data.pop("extra_data")
+
+        extraSerializer = Extra_DataSerializer(data=extra)
+        extraSerializer.is_valid(raise_exception=True)
+        
+        Extra_Data.objects.create(**extra,book=book)
+        
+        genders = self.request.data.pop("genders")
 
         for item in genders:
+            genderSerializer = GenderSerializer(data=item)
+            genderSerializer.is_valid(raise_exception=True)
+
             gender, _ = Gender.objects.get_or_create(**item)
             book.genders.add(gender)
 
@@ -61,6 +77,9 @@ class BookGetPacthDeleteIdView(RetrieveUpdateDestroyAPIView):
 
         if "extra_data" in self.request.data.keys():
             extra = self.request.data.pop("extra_data")
+            extraSerializer = Extra_DataSerializer(data=extra)
+            extraSerializer.is_valid(raise_exception=True)
+
             Extra_Data.objects.update(**extra)
 
         if "genders" in self.request.data.keys():
@@ -68,6 +87,8 @@ class BookGetPacthDeleteIdView(RetrieveUpdateDestroyAPIView):
             book.genders.clear()
 
             for item in genders:
+                genderSerializer = GenderSerializer(data=item)
+                genderSerializer.is_valid(raise_exception=True)
                 gender, _ = Gender.objects.get_or_create(**item)
                 book.genders.add(gender)
 
