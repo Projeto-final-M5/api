@@ -19,3 +19,21 @@ class BorrowedsSerializers(serializers.ModelSerializer):
             "user_id",
             "book_id"
         ]
+        
+class BorrowedsSerializersDevolution(serializers.ModelSerializer):
+    class Meta:
+        model = Borrowed
+        fields = [
+            "id",
+            "user_id",
+            "book_id",
+        ]
+        read_only_fields = [
+            "id",
+            "initial_date",
+            "finish_date",
+            "initial_date",
+            "shipping_method",
+            "user_id",
+            "book_id"
+        ]
