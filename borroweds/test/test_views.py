@@ -132,3 +132,71 @@ class BorrowedViewTest(APITestCase):
 
         self.assertTrue(response.status_code, 403)
         self.assertTrue(response.data, data)
+
+    def test_can_devolution(self):
+        owner_token = self.client.post(self.login, self.user_login, format="json")
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + owner_token.data["token"])
+
+        book_response = self.client.post(
+            self.base_url_book,
+            {
+                **self.book_data,
+                "user": self.user_data,
+                "extra_data": self.extra_data_data,
+                "genders": self.gender_data,
+            },
+            format="json",
+        )
+
+        renter_token = self.client.post(self.login, self.user_diff_login, format="json")
+        self.client.credentials(
+            HTTP_AUTHORIZATION="Token " + renter_token.data["token"]
+        )
+
+        get_borrewed_book = self.client.post(
+            f"/api/borrowed/{book_response.data['id']}/book/",
+            {"shipping_method": "Retirada", "finish_date": "2023-01-01"},
+            format="json",
+        )
+
+        devolution_borrewed_book = self.client.patch(
+            f"/api/borrowed/{book_response.data['id']}/devolution/",
+            {},
+            format="json",
+        )
+
+        book = Book.objects.get(id=book_response.data["id"])
+
+        self.assertTrue(book.available)
+        self.assertEqual(devolution_borrewed_book.status_code, 200)
+
+    def test_devolution_not_borrowed(self):
+        owner_token = self.client.post(self.login, self.user_login, format="json")
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + owner_token.data["token"])
+
+        book_response = self.client.post(
+            self.base_url_book,
+            {
+                **self.book_data,
+                "user": self.user_data,
+                "extra_data": self.extra_data_data,
+                "genders": self.gender_data,
+            },
+            format="json",
+        )
+
+        renter_token = self.client.post(self.login, self.user_diff_login, format="json")
+        self.client.credentials(
+            HTTP_AUTHORIZATION="Token " + renter_token.data["token"]
+        )
+
+        devolution_borrewed_book = self.client.patch(
+            f"/api/borrowed/{book_response.data['id']}/devolution/",
+            {},
+            format="json",
+        )
+
+        book = Book.objects.get(id=book_response.data["id"])
+
+        self.assertEqual(devolution_borrewed_book.data["detail"], "Books is available")
+        self.assertEqual(devolution_borrewed_book.status_code, 400)
