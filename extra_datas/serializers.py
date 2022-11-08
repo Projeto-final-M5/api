@@ -13,4 +13,7 @@ class Extra_DataSerializer(serializers.ModelSerializer):
             "id": {
                 "read_only": True,
             },
+            "book": {
+                "read_only": True,
+            },
         }
