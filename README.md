@@ -38,7 +38,7 @@ These instructions will get you a copy of the project up and running on your loc
     ├── docker-compose.yml       - Docker container config file
     ├── DockerFile               - Docker image config file
     ├── manage.py                - Django Utility file
-    ├── requirements             - Manifest file
+    ├── requirements             - Dependencies file
     └── README.md                - Readme file from projet
 
 ## Installing
