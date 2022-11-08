@@ -5,8 +5,6 @@ from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
     UpdateAPIView,
 )
-from rest_framework.views import Response, status
-from django.shortcuts import get_object_or_404
 
 from .models import Book
 from .serializers import (
@@ -22,7 +20,7 @@ from extra_datas.models import Extra_Data
 from .permissions import IsAdmOrOwnerBook
 from utils.validation_error import CustomForbidenError
 from extra_datas.serializers import Extra_DataSerializer
-from genders.serializers import GenderSerializer,GenderSerializerChoices
+from genders.serializers import GenderSerializer
 
 
 # Create your views here.
@@ -35,10 +33,10 @@ class BookView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         if "genders" not in self.request.data.keys():
-            raise CustomForbidenError({"genders":["This camp is required."]})
-        
+            raise CustomForbidenError({"genders": ["This camp is required."]})
+
         if "extra_data" not in self.request.data.keys():
-            raise CustomForbidenError({"extra_data":["This camp is required."]})
+            raise CustomForbidenError({"extra_data": ["This camp is required."]})
 
         book = serializer.save(user=self.request.user)
 
@@ -46,9 +44,9 @@ class BookView(ListCreateAPIView):
 
         extraSerializer = Extra_DataSerializer(data=extra)
         extraSerializer.is_valid(raise_exception=True)
-        
-        Extra_Data.objects.create(**extra,book=book)
-        
+
+        Extra_Data.objects.create(**extra, book=book)
+
         genders = self.request.data.pop("genders")
 
         for item in genders:
@@ -58,10 +56,6 @@ class BookView(ListCreateAPIView):
             gender, _ = Gender.objects.get_or_create(**item)
             book.genders.add(gender)
 
-        # for item in genders:
-        #     gender, _ = Gender.objects.get_or_create(**item)
-        #     gender.books.add(book)
-
 
 class BookGetPacthDeleteIdView(RetrieveUpdateDestroyAPIView):
 
@@ -70,10 +64,9 @@ class BookGetPacthDeleteIdView(RetrieveUpdateDestroyAPIView):
 
     queryset = Book.objects.all()
     serializer_class = BookGetUpdateSerializer
-    
+
     def get_serializer(self, *args, **kwargs):
         book = self.get_object()
-        print(book)
 
         if "extra_data" in self.request.data.keys():
             extra = self.request.data.pop("extra_data")
@@ -94,6 +87,7 @@ class BookGetPacthDeleteIdView(RetrieveUpdateDestroyAPIView):
 
         return super().get_serializer(*args, **kwargs)
 
+
 class BookDeleteView(UpdateAPIView):
 
     authentication_classes = [TokenAuthentication]
@@ -101,4 +95,3 @@ class BookDeleteView(UpdateAPIView):
 
     queryset = Book.objects.all()
     serializer_class = BookDeleteSerializer
-
