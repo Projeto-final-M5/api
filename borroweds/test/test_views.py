@@ -142,7 +142,7 @@ class BorrowedViewTest(APITestCase):
             {
                 **self.book_data,
                 "user": self.user_data,
-                # "extra_data": self.extra_data_data,
+                "extra_data": self.extra_data_data,
                 "genders": self.gender_data,
             },
             format="json",
@@ -166,7 +166,7 @@ class BorrowedViewTest(APITestCase):
         )
 
         book = Book.objects.get(id=book_response.data["id"])
-        
+
         self.assertTrue(book.available)
         self.assertEqual(devolution_borrewed_book.status_code, 200)
 
@@ -179,7 +179,7 @@ class BorrowedViewTest(APITestCase):
             {
                 **self.book_data,
                 "user": self.user_data,
-                # "extra_data": self.extra_data_data,
+                "extra_data": self.extra_data_data,
                 "genders": self.gender_data,
             },
             format="json",
@@ -197,7 +197,6 @@ class BorrowedViewTest(APITestCase):
         )
 
         book = Book.objects.get(id=book_response.data["id"])
-        
-        self.assertEqual(devolution_borrewed_book.data["detail"],"Books is available")
-        self.assertEqual(devolution_borrewed_book.status_code, 400)
 
+        self.assertEqual(devolution_borrewed_book.data["detail"], "Books is available")
+        self.assertEqual(devolution_borrewed_book.status_code, 400)
