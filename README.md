@@ -78,6 +78,12 @@ git clone git@github.com:Projeto-final-M5/api.git
 source venv/bin/activate
 ```
 
+> - If you are using windows you need to use the powershell and activate the Virtual Enviroment using this command
+
+```
+.\venv\Scripts\activate
+```
+
 - **Install dependencies**
 
 ```
