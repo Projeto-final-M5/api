@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path(
-        "feedback/<int:borrowed_id>/borrowed/",
+        "feedback/<str:borrowed_id>/borrowed/",
         views.PostFeedBack.as_view(),
     ),
     path(
