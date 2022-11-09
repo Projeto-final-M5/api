@@ -6,7 +6,7 @@ from . import views
 
 urlpatterns = [
     path(
-        "borrowed/<pk>/book/user.id/",
+        "borrowed/<pk>/book/",
         views.BorrrowedCreateView.as_view(),
         name="borrowed",
     ),
