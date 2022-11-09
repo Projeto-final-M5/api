@@ -60,15 +60,13 @@ class FeedBackViewTest(APITestCase):
         response_feed = self.client.post(
             f"/api/feedback/{response.data['id']}/borrowed/",
             {"stars_renter": 5, "rating_renter": "Very Good"},
-            format="json"
+            format="json",
         )
 
         self.assertTrue(response_feed.status_code, 201)
         self.assertEqual(response_feed.data["stars_renter"], 5)
         self.assertEqual(response_feed.data["rating_renter"], "Very Good")
-        self.assertEqual(
-            response_feed.data["borrowed"]["id"],
-            response.data["id"])
+        self.assertEqual(response_feed.data["borrowed"]["id"], response.data["id"])
 
     def test_cant_create_feedback_if_not_owner_or_renter(self):
         owner_token = self.client.post(self.login, self.user_login, format="json")
@@ -98,7 +96,7 @@ class FeedBackViewTest(APITestCase):
         response_feed = self.client.post(
             f"/api/feedback/{response.data['id']}/borrowed/",
             {"stars_renter": 5, "rating_renter": "Very Good"},
-            format="json"
+            format="json",
         )
 
         mock_usererror_create = {
@@ -112,16 +110,19 @@ class FeedBackViewTest(APITestCase):
             "password": "senhaforte",
         }
         user_error = User.objects.create_user(**mock_usererror_create)
-        user_error_token = self.client.post(self.login, mock_usererror_login, format="json")
+        user_error_token = self.client.post(
+            self.login, mock_usererror_login, format="json"
+        )
         self.client.credentials(
             HTTP_AUTHORIZATION="Token " + user_error_token.data["token"]
         )
         response_feed_error = self.client.post(
             f"/api/feedback/{response.data['id']}/borrowed/",
             {"stars_owner": 5, "rating_Owner": "Very Bad"},
-            format="json"
+            format="json",
         )
         self.assertTrue(response_feed_error.status_code, 401)
         self.assertEqual(
-            response_feed_error.data["messsage"],
-            "you can only post the feedback if you are the owner or renter of the book")
+            response_feed_error.data["message"],
+            "you can only post the feedback if you are the owner or renter of the book",
+        )
