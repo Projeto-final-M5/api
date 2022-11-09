@@ -50,6 +50,7 @@ class BorrrowedCreateView(CreateAPIView):
         )
 
 
+
 class BorrrowedDevolutionView(UpdateAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
