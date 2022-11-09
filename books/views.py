@@ -65,7 +65,7 @@ class BookGetPacthDeleteIdView(RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookGetUpdateSerializer
 
-    def get_serializer(self, *args, **kwargs):
+    def perform_create(self, *args, **kwargs):
         book = self.get_object()
 
         if "extra_data" in self.request.data.keys():

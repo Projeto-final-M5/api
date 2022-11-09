@@ -6,7 +6,7 @@ info:
 paths:
   /api/book/:
     get:
-      operationId: api_book_list
+      operationId: book_list
       parameters:
       - name: page
         required: false
@@ -15,7 +15,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - book
       security:
       - tokenAuth: []
       - {}
@@ -27,9 +27,9 @@ paths:
                 $ref: '#/components/schemas/PaginatedBookPostList'
           description: ''
     post:
-      operationId: api_book_create
+      operationId: book_create
       tags:
-      - api
+      - book
       requestBody:
         content:
           application/json:
@@ -53,7 +53,7 @@ paths:
           description: ''
   /api/book/{id}/:
     get:
-      operationId: api_book_retrieve
+      operationId: book_retrieve
       parameters:
       - in: path
         name: id
@@ -63,7 +63,7 @@ paths:
         description: A UUID string identifying this book.
         required: true
       tags:
-      - api
+      - book
       security:
       - tokenAuth: []
       responses:
@@ -74,7 +74,7 @@ paths:
                 $ref: '#/components/schemas/BookGetUpdate'
           description: ''
     put:
-      operationId: api_book_update
+      operationId: book_update
       parameters:
       - in: path
         name: id
@@ -84,7 +84,7 @@ paths:
         description: A UUID string identifying this book.
         required: true
       tags:
-      - api
+      - book
       requestBody:
         content:
           application/json:
@@ -107,7 +107,7 @@ paths:
                 $ref: '#/components/schemas/BookGetUpdate'
           description: ''
     patch:
-      operationId: api_book_partial_update
+      operationId: book_partial_update
       parameters:
       - in: path
         name: id
@@ -117,7 +117,7 @@ paths:
         description: A UUID string identifying this book.
         required: true
       tags:
-      - api
+      - book
       requestBody:
         content:
           application/json:
@@ -139,7 +139,7 @@ paths:
                 $ref: '#/components/schemas/BookGetUpdate'
           description: ''
     delete:
-      operationId: api_book_destroy
+      operationId: book_destroy
       parameters:
       - in: path
         name: id
@@ -149,7 +149,7 @@ paths:
         description: A UUID string identifying this book.
         required: true
       tags:
-      - api
+      - book
       security:
       - tokenAuth: []
       responses:
@@ -157,7 +157,7 @@ paths:
           description: No response body
   /api/book/{id}/soft:
     put:
-      operationId: api_book_soft_update
+      operationId: book_soft_update
       parameters:
       - in: path
         name: id
@@ -167,7 +167,7 @@ paths:
         description: A UUID string identifying this book.
         required: true
       tags:
-      - api
+      - book
       requestBody:
         content:
           application/json:
@@ -190,7 +190,7 @@ paths:
                 $ref: '#/components/schemas/BookDelete'
           description: ''
     patch:
-      operationId: api_book_soft_partial_update
+      operationId: book_soft_partial_update
       parameters:
       - in: path
         name: id
@@ -200,7 +200,7 @@ paths:
         description: A UUID string identifying this book.
         required: true
       tags:
-      - api
+      - book
       requestBody:
         content:
           application/json:
@@ -221,9 +221,30 @@ paths:
               schema:
                 $ref: '#/components/schemas/BookDelete'
           description: ''
-  /api/borrowed/{id}/book/:
-    post:
-      operationId: api_borrowed_book_create
+  /api/borrowed/:
+    get:
+      operationId: borrowed_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - borrowed
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBorrowedsSerializersList'
+          description: ''
+  /api/borrowed/{id}/:
+    get:
+      operationId: borrowed_retrieve
       parameters:
       - in: path
         name: id
@@ -233,7 +254,29 @@ paths:
         description: A UUID string identifying this borrowed.
         required: true
       tags:
-      - api
+      - borrowed
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BorrowedsSerializers'
+          description: ''
+  /api/borrowed/{id}/book/:
+    post:
+      operationId: borrowed_book_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this borrowed.
+        required: true
+      tags:
+      - borrowed
       requestBody:
         content:
           application/json:
@@ -255,11 +298,197 @@ paths:
               schema:
                 $ref: '#/components/schemas/BorrowedsSerializers'
           description: ''
+  /api/borrowed/{id}/devolution/:
+    put:
+      operationId: borrowed_devolution_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this borrowed.
+        required: true
+      tags:
+      - borrowed
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BorrowedsSerializersDevolution'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BorrowedsSerializersDevolution'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BorrowedsSerializersDevolution'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BorrowedsSerializersDevolution'
+          description: ''
+    patch:
+      operationId: borrowed_devolution_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this borrowed.
+        required: true
+      tags:
+      - borrowed
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBorrowedsSerializersDevolution'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBorrowedsSerializersDevolution'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBorrowedsSerializersDevolution'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BorrowedsSerializersDevolution'
+          description: ''
+  /api/feedback/:
+    get:
+      operationId: feedback_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - feedback
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGetOrUpdateFeedBackSerializersList'
+          description: ''
+  /api/feedback/{book_id}/book/:
+    get:
+      operationId: feedback_book_retrieve
+      parameters:
+      - in: path
+        name: book_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - feedback
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrUpdateFeedBackSerializers'
+          description: ''
+  /api/feedback/{borrowed_id}/borrowed/:
+    post:
+      operationId: feedback_borrowed_create
+      parameters:
+      - in: path
+        name: borrowed_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - feedback
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostFeedBackRenterSerializers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PostFeedBackRenterSerializers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PostFeedBackRenterSerializers'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostFeedBackRenterSerializers'
+          description: ''
+  /api/feedback/{id}/:
+    get:
+      operationId: feedback_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this feed back.
+        required: true
+      tags:
+      - feedback
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrUpdateFeedBackSerializers'
+          description: ''
+  /api/feedback/{user_id}/user/:
+    get:
+      operationId: feedback_user_retrieve
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - feedback
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrUpdateFeedBackSerializers'
+          description: ''
   /api/login/:
     post:
-      operationId: api_login_create
+      operationId: login_create
       tags:
-      - api
+      - login
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -284,7 +513,7 @@ paths:
           description: ''
   /api/users/:
     get:
-      operationId: api_users_list
+      operationId: users_list
       parameters:
       - name: page
         required: false
@@ -293,7 +522,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - users
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -306,9 +535,9 @@ paths:
                 $ref: '#/components/schemas/PaginatedUserPostList'
           description: ''
     post:
-      operationId: api_users_create
+      operationId: users_create
       tags:
-      - api
+      - users
       requestBody:
         content:
           application/json:
@@ -334,7 +563,7 @@ paths:
           description: ''
   /api/users/{id}/:
     put:
-      operationId: api_users_update
+      operationId: users_update
       parameters:
       - in: path
         name: id
@@ -344,7 +573,7 @@ paths:
         description: A UUID string identifying this user.
         required: true
       tags:
-      - api
+      - users
       requestBody:
         content:
           application/json:
@@ -367,7 +596,7 @@ paths:
                 $ref: '#/components/schemas/UserPatch'
           description: ''
     patch:
-      operationId: api_users_partial_update
+      operationId: users_partial_update
       parameters:
       - in: path
         name: id
@@ -377,7 +606,7 @@ paths:
         description: A UUID string identifying this user.
         required: true
       tags:
-      - api
+      - users
       requestBody:
         content:
           application/json:
@@ -400,7 +629,7 @@ paths:
           description: ''
   /api/users/{id}/soft:
     put:
-      operationId: api_users_soft_update
+      operationId: users_soft_update
       parameters:
       - in: path
         name: id
@@ -410,7 +639,7 @@ paths:
         description: A UUID string identifying this user.
         required: true
       tags:
-      - api
+      - users
       requestBody:
         content:
           application/json:
@@ -433,7 +662,7 @@ paths:
                 $ref: '#/components/schemas/UserDelete'
           description: ''
     patch:
-      operationId: api_users_soft_partial_update
+      operationId: users_soft_partial_update
       parameters:
       - in: path
         name: id
@@ -443,7 +672,7 @@ paths:
         description: A UUID string identifying this user.
         required: true
       tags:
-      - api
+      - users
       requestBody:
         content:
           application/json:
@@ -466,7 +695,7 @@ paths:
           description: ''
   /api/users/address/{id}/:
     get:
-      operationId: api_users_address_retrieve
+      operationId: users_address_retrieve
       parameters:
       - in: path
         name: id
@@ -476,7 +705,7 @@ paths:
         description: A UUID string identifying this address.
         required: true
       tags:
-      - api
+      - users
       security:
       - tokenAuth: []
       responses:
@@ -487,7 +716,7 @@ paths:
                 $ref: '#/components/schemas/AddressDetail'
           description: ''
     put:
-      operationId: api_users_address_update
+      operationId: users_address_update
       parameters:
       - in: path
         name: id
@@ -497,7 +726,7 @@ paths:
         description: A UUID string identifying this address.
         required: true
       tags:
-      - api
+      - users
       requestBody:
         content:
           application/json:
@@ -520,7 +749,7 @@ paths:
                 $ref: '#/components/schemas/AddressDetail'
           description: ''
     patch:
-      operationId: api_users_address_partial_update
+      operationId: users_address_partial_update
       parameters:
       - in: path
         name: id
@@ -530,7 +759,7 @@ paths:
         description: A UUID string identifying this address.
         required: true
       tags:
-      - api
+      - users
       requestBody:
         content:
           application/json:
@@ -727,13 +956,15 @@ components:
           maxLength: 254
         condition:
           type: integer
-          readOnly: true
+          maximum: 10
+          minimum: 0
         isbn:
           type: string
           maxLength: 13
         extra_data:
           type: string
           format: uuid
+          readOnly: true
         genders:
           type: array
           items:
@@ -835,11 +1066,35 @@ components:
           type: string
           format: uuid
           readOnly: true
+        total_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+          nullable: true
       required:
       - book_id
       - id
       - initial_date
       - shipping_method
+      - user_id
+    BorrowedsSerializersDevolution:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user_id:
+          type: string
+          format: uuid
+          readOnly: true
+        book_id:
+          type: string
+          format: uuid
+          readOnly: true
+      required:
+      - book_id
+      - id
       - user_id
     Extra_Data:
       type: object
@@ -860,6 +1115,7 @@ components:
         book:
           type: string
           format: uuid
+          readOnly: true
       required:
       - book
       - id
@@ -882,6 +1138,36 @@ components:
       - Horror
       - NONE
       type: string
+    GetOrUpdateFeedBackSerializers:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        borrowed:
+          allOf:
+          - $ref: '#/components/schemas/BorrowedsSerializers'
+          readOnly: true
+        stars_owner:
+          type: integer
+          maximum: 5
+          minimum: 0
+          nullable: true
+        stars_renter:
+          type: integer
+          maximum: 5
+          minimum: 0
+          nullable: true
+        rating_owner:
+          type: string
+          nullable: true
+        rating_renter:
+          type: string
+          nullable: true
+      required:
+      - borrowed
+      - id
     LanguageEnum:
       enum:
       - Portuguese
@@ -907,6 +1193,46 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BookPost'
+    PaginatedBorrowedsSerializersList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BorrowedsSerializers'
+    PaginatedGetOrUpdateFeedBackSerializersList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetOrUpdateFeedBackSerializers'
     PaginatedUserPostList:
       type: object
       properties:
@@ -1032,18 +1358,35 @@ components:
           maxLength: 254
         condition:
           type: integer
-          readOnly: true
+          maximum: 10
+          minimum: 0
         isbn:
           type: string
           maxLength: 13
         extra_data:
           type: string
           format: uuid
+          readOnly: true
         genders:
           type: array
           items:
             type: string
             format: uuid
+          readOnly: true
+    PatchedBorrowedsSerializersDevolution:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user_id:
+          type: string
+          format: uuid
+          readOnly: true
+        book_id:
+          type: string
+          format: uuid
           readOnly: true
     PatchedUserDelete:
       type: object
@@ -1149,6 +1492,38 @@ components:
       enum:
       - None
       type: string
+    PostFeedBackRenterSerializers:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        borrowed:
+          allOf:
+          - $ref: '#/components/schemas/BorrowedsSerializers'
+          readOnly: true
+        stars_owner:
+          type: integer
+          readOnly: true
+          nullable: true
+        rating_owner:
+          type: string
+          readOnly: true
+          nullable: true
+        stars_renter:
+          type: integer
+          minimum: 0
+          maximum: 5
+        rating_renter:
+          type: string
+      required:
+      - borrowed
+      - id
+      - rating_owner
+      - rating_renter
+      - stars_owner
+      - stars_renter
     ShippingMethodEnum:
       enum:
       - Correio
