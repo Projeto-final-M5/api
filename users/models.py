@@ -33,15 +33,15 @@ class User(AbstractUser):
         "birth",
     ]
 
-    def get_nota(self)-> str:
-        feeds = FeedBack.objects.all()
-        valores = []
-        for e in FeedBack.objects.all():
-            valores.append(e)
-       
-        notas=[]
-        for item in valores:
-            nota = Borrowed.objects.get(feed_back = item)
-            print(item,"1")
-        print(valores)
-        return "to"
+    def get_nota(self, obj)-> str:
+        feed_user = FeedBack.objects.filter(borrowed__user=obj)
+        
+        total = []
+        for feed in feed_user:
+            if(feed.stars_owner):
+                total.append(feed.stars_owner)
+                
+        saida = 0
+        if sum(total) != 0:
+            saida = sum(total) / len(total)
+        return saida

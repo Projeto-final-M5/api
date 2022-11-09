@@ -43,7 +43,7 @@ class UserPostSerializer(serializers.ModelSerializer):
             
         }
     def get_nota_method(self,obj:User):
-        return obj.get_nota()
+        return obj.get_nota(obj)
         
     address = AddressSerializer(read_only=True)
 
