@@ -392,7 +392,7 @@ paths:
       - in: path
         name: book_id
         schema:
-          type: integer
+          type: string
         required: true
       tags:
       - feedback
@@ -414,7 +414,7 @@ paths:
       - in: path
         name: borrowed_id
         schema:
-          type: integer
+          type: string
         required: true
       tags:
       - feedback
@@ -469,7 +469,7 @@ paths:
       - in: path
         name: user_id
         schema:
-          type: integer
+          type: string
         required: true
       tags:
       - feedback
@@ -780,6 +780,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/AddressDetail'
           description: ''
+  /payment/{id}/:
+    post:
+      operationId: payment_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - payment
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
 components:
   schemas:
     Address:
@@ -790,14 +806,16 @@ components:
           format: uuid
           readOnly: true
         state:
-          $ref: '#/components/schemas/PlaceEnum'
+          $ref: '#/components/schemas/StateEnum'
         city:
-          $ref: '#/components/schemas/PlaceEnum'
+          type: string
+          maxLength: 100
         district:
           type: string
           maxLength: 100
         place:
-          $ref: '#/components/schemas/PlaceEnum'
+          type: string
+          maxLength: 100
         number:
           type: string
           maxLength: 100
@@ -811,9 +829,11 @@ components:
           type: string
           format: uuid
       required:
+      - city
       - district
       - id
       - number
+      - place
       - zip_code
     AddressDetail:
       type: object
@@ -823,14 +843,16 @@ components:
           format: uuid
           readOnly: true
         state:
-          $ref: '#/components/schemas/PlaceEnum'
+          $ref: '#/components/schemas/StateEnum'
         city:
-          $ref: '#/components/schemas/PlaceEnum'
+          type: string
+          maxLength: 100
         district:
           type: string
           maxLength: 100
         place:
-          $ref: '#/components/schemas/PlaceEnum'
+          type: string
+          maxLength: 100
         number:
           type: string
           maxLength: 100
@@ -841,9 +863,11 @@ components:
           type: string
           nullable: true
       required:
+      - city
       - district
       - id
       - number
+      - place
       - zip_code
     AuthToken:
       type: object
@@ -1261,14 +1285,16 @@ components:
           format: uuid
           readOnly: true
         state:
-          $ref: '#/components/schemas/PlaceEnum'
+          $ref: '#/components/schemas/StateEnum'
         city:
-          $ref: '#/components/schemas/PlaceEnum'
+          type: string
+          maxLength: 100
         district:
           type: string
           maxLength: 100
         place:
-          $ref: '#/components/schemas/PlaceEnum'
+          type: string
+          maxLength: 100
         number:
           type: string
           maxLength: 100
@@ -1488,10 +1514,6 @@ components:
         stars:
           type: integer
           readOnly: true
-    PlaceEnum:
-      enum:
-      - None
-      type: string
     PostFeedBackRenterSerializers:
       type: object
       properties:
@@ -1528,6 +1550,37 @@ components:
       enum:
       - Correio
       - Retirada
+      type: string
+    StateEnum:
+      enum:
+      - Acre
+      - Alagoas
+      - Amazonas
+      - Amapá
+      - Bahia
+      - Ceará
+      - Distrito Federal
+      - Espírito Santo
+      - Goiás
+      - Maranhão
+      - Minas Gerais
+      - Mato Grosso do Sul
+      - Mato Grosso
+      - Pará
+      - Paraíba
+      - Pernambuco
+      - Piauí
+      - Paraná
+      - Rio de Janeiro
+      - Rio Grande do Norte
+      - Rondônia
+      - Roraima
+      - Rio Grande do Sul
+      - Santa Catarina
+      - Sergipe
+      - São Paulo
+      - Tocantins
+      - Not Defined
       type: string
     TransactionEnum:
       enum:
@@ -1663,6 +1716,9 @@ components:
           type: string
           format: uuid
           readOnly: true
+        nota:
+          type: string
+          readOnly: true
         address:
           allOf:
           - $ref: '#/components/schemas/Address'
@@ -1703,6 +1759,7 @@ components:
       - birth
       - email
       - id
+      - nota
       - password
       - stars
       - username
