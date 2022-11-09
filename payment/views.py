@@ -31,7 +31,7 @@ def home(request, book_id, user_id):
 
 class Payment(APIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated, isNotOwner]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request: Request, pk) -> Response:
         host = request.get_host()
