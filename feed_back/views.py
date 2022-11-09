@@ -39,14 +39,17 @@ class PostFeedBack(APIView):
             if serializer == PostFeedBackOwnerSerializers and (
                 feed.stars_owner or feed.rating_owner
             ):
-                # import ipdb
-
-                # ipdb.set_trace()
-                return Response({"msg": 2})
+                return Response(
+                    {"msg": "you already replied to the feed Back"},
+                    status.HTTP_400_BAD_REQUEST,
+                )
             elif serializer == PostFeedBackRenterSerializers and (
                 feed.stars_renter or feed.rating_renter
             ):
-                return Response({"msg": 1})
+                return Response(
+                    {"msg": "you already replied to the feed Back"},
+                    status.HTTP_400_BAD_REQUEST,
+                )
             Serializer = serializer(
                 feed,
                 data=request.data,

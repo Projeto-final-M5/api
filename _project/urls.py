@@ -15,4 +15,6 @@ urlpatterns = [
     path("api/", include("books.urls")),
     path("api/", include("borroweds.urls")),
     path("api/", include("feed_back.urls")),
+    path("paypal/", include("paypal.standard.ipn.urls")),
+    path("", include("payment.urls")),
 ]
