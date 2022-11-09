@@ -164,3 +164,127 @@ class BookViewTest(APITestCase):
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.data, data)
+
+    def test_can_patch_book(self):
+        book_patch = {
+            "title": "Don Quixote Update",
+            "available": False,
+            "author": "Miguek de Cervantes Saavedra Update",
+        }
+
+        user_token = self.client.post(self.login, self.user_login, format="json")
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + user_token.data["token"])
+
+        book = self.client.post(
+            self.base_url,
+            {
+                **self.book_data,
+                "user": self.user_data,
+                "extra_data": self.extra_data_data,
+                "genders": self.gender_data,
+            },
+            format="json",
+        )
+        response = self.client.patch(
+            f"/api/book/{book.data['id']}/", book_patch, format="json"
+        )
+
+        data = {
+            **response.data,
+            "title": book_patch["title"],
+            "available": book_patch["available"],
+            "author": book_patch["author"],
+        }
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, data)
+
+    def test_cant_patch_book_without_being_owner(self):
+        book_patch = {
+            "title": "Don Quixote Update",
+            "available": False,
+            "author": "Miguek de Cervantes Saavedra Update",
+        }
+
+        owner_token = self.client.post(self.login, self.user_login, format="json")
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + owner_token.data["token"])
+
+        book = self.client.post(
+            self.base_url,
+            {
+                **self.book_data,
+                "user": self.user_data,
+                "extra_data": self.extra_data_data,
+                "genders": self.gender_data,
+            },
+            format="json",
+        )
+
+        renter_token = self.client.post(self.login, self.user_diff_login, format="json")
+        self.client.credentials(
+            HTTP_AUTHORIZATION="Token " + renter_token.data["token"]
+        )
+
+        response = self.client.patch(
+            f"/api/book/{book.data['id']}/", book_patch, format="json"
+        )
+
+        data = {"detail": "You do not have permission to perform this action."}
+
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.data, data)
+
+    def test_can_soft_delete_book(self):
+        book_delete = {
+            "is_active": False
+        }
+
+        user_token = self.client.post(self.login, self.user_login, format="json")
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + user_token.data["token"])
+
+        book = self.client.post(
+            self.base_url,
+            {
+                **self.book_data,
+                "user": self.user_data,
+                "extra_data": self.extra_data_data,
+                "genders": self.gender_data,
+            },
+            format="json",
+        )
+        response = self.client.patch(
+            f"/api/book/{book.data['id']}/soft", book_delete,format="json"
+        )
+
+        self.assertEqual(response.status_code, 204)
+        
+    def test_cant_soft_delete_book(self):
+        book_delete = {
+            "is_active": False
+        }
+
+        owner_token = self.client.post(self.login, self.user_login, format="json")
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + owner_token.data["token"])
+
+        book = self.client.post(
+            self.base_url,
+            {
+                **self.book_data,
+                "user": self.user_data,
+                "extra_data": self.extra_data_data,
+                "genders": self.gender_data,
+            },
+            format="json",
+        )
+        
+        diff_token = self.client.post(self.login, self.user_diff_login, format="json")
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + diff_token.data["token"])
+
+        response = self.client.patch(
+            f"/api/book/{book.data['id']}/soft", book_delete,format="json"
+        )
+
+        data = {"detail": "You do not have permission to perform this action."}
+        
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.data, data)
