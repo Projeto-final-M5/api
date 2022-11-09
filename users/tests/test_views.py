@@ -49,7 +49,6 @@ class UserViewTest(APITestCase):
                 "additional_data": self.user_data["address"]["additional_data"],
             },
         }
-
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.data, data)
 
@@ -71,6 +70,8 @@ class UserViewTest(APITestCase):
             "district": ["This field is required."],
             "number": ["This field is required."],
             "zip_code": ["This field is required."],
+            "city": ["This field is required."],
+            "place": ["This field is required."],
         }
 
         self.assertEqual(response.status_code, 400)
@@ -163,7 +164,6 @@ class UserViewTest(APITestCase):
         self.assertEqual(response.status_code, 403)
         self.assertEqual(response.data, data)
 
-
     def test_cant_update_user_with_invalid_user_id(self):
         info = {"email": "new@new.com", "birth": "1990-10-10"}
 
@@ -172,9 +172,7 @@ class UserViewTest(APITestCase):
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + adm_token.data["token"])
 
-        response = self.client.patch(
-            f"{self.base_url}1/", info, format="json"
-        )
+        response = self.client.patch(f"{self.base_url}1/", info, format="json")
 
         data = {"detail": "Not found."}
 
@@ -226,12 +224,9 @@ class UserViewTest(APITestCase):
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + adm_token.data["token"])
 
-        response = self.client.patch(
-            f"{self.base_url}1/soft", None, format="json"
-        )
+        response = self.client.patch(f"{self.base_url}1/soft", None, format="json")
 
         data = {"detail": "Not found."}
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.data, data)
-
