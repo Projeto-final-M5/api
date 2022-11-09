@@ -16,6 +16,9 @@ from users.models import User
 
 
 class PostFeedBack(APIView):
+    queryset = FeedBack
+    serializer_class = PostFeedBackRenterSerializers
+
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
 
@@ -36,6 +39,20 @@ class PostFeedBack(APIView):
             )
         if feed_back:
             feed = FeedBack.objects.get(borrowed=borrowed.id)
+            if serializer == PostFeedBackOwnerSerializers and (
+                feed.stars_owner or feed.rating_owner
+            ):
+                return Response(
+                    {"msg": "you already replied to the feed Back"},
+                    status.HTTP_400_BAD_REQUEST,
+                )
+            elif serializer == PostFeedBackRenterSerializers and (
+                feed.stars_renter or feed.rating_renter
+            ):
+                return Response(
+                    {"msg": "you already replied to the feed Back"},
+                    status.HTTP_400_BAD_REQUEST,
+                )
             Serializer = serializer(
                 feed,
                 data=request.data,
@@ -59,6 +76,9 @@ class GetFeedBack(generics.ListAPIView):
 
 
 class GetUserFeedBack(APIView):
+    queryset = FeedBack
+    serializer_class = GetOrUpdateFeedBackSerializers
+
     def get(self, request: Request, user_id) -> Response:
         user = get_object_or_404(User, id=self.kwargs["user_id"])
         borrowed = Borrowed.objects.filter(user=user.id)
@@ -75,6 +95,9 @@ class GetUserFeedBack(APIView):
 
 
 class GetBookFeedBack(APIView):
+    queryset = FeedBack
+    serializer_class = GetOrUpdateFeedBackSerializers
+
     def get(self, request: Request, book_id) -> Response:
         book = get_object_or_404(Book, id=self.kwargs["book_id"])
         borrowed = Borrowed.objects.filter(book=book.id)

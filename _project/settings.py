@@ -27,7 +27,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.getenv("SECRET_KEY"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if DATABASE_URL:
+    DEBUG = False
+else:
+    DEBUG = True
 
 ALLOWED_HOSTS = ["localhost"]
 
@@ -50,6 +55,8 @@ THIRD_PARTY_APPS = [
 ]
 
 MY_APPS = [
+    "payment",
+    "paypal.standard.ipn",
     "users",
     "addresses",
     "borroweds",
@@ -73,6 +80,7 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "Your project description",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
+    "SCHEMA_PATH_PREFIX": "/api/",
 }
 
 MIDDLEWARE = [
@@ -182,3 +190,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "users.User"
 
 django_on_heroku.settings(locals())
+
+# paypal
+
+PAYPAL_TEST = True
+PAYPAL_RECEIVER_EMAIL = "LucasOCara@gmail.com"

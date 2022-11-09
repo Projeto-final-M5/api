@@ -39,9 +39,16 @@ class BorrrowedCreateView(CreateAPIView):
         book_instance.available = False
         book_instance.save()
 
+        data_now = dt.now(timezone.utc).date()
+        data = (
+            dt.strptime(self.request.data["finish_date"], "%Y-%m-%d").date() - data_now
+        )
+        total_price = data.days * book_instance.price
+
         return serializer.save(
             book=book_instance, user=self.request.user, total_price=total_price
         )
+
 
 
 class BorrrowedDevolutionView(UpdateAPIView):
