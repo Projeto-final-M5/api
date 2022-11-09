@@ -6,6 +6,7 @@ from addresses.serializers import AddressSerializer
 
 
 class UserPostSerializer(serializers.ModelSerializer):
+    nota = serializers.SerializerMethodField(method_name="get_nota_method", read_only=True)
     class Meta:
         model = User
 
@@ -39,8 +40,11 @@ class UserPostSerializer(serializers.ModelSerializer):
             "address": {
                 "required": True,
             },
+            
         }
-
+    def get_nota_method(self,obj:User):
+        return obj.get_nota()
+        
     address = AddressSerializer(read_only=True)
 
     def create(self, validated_data: dict) -> dict:
