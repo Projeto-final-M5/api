@@ -16,6 +16,9 @@ from users.models import User
 
 
 class PostFeedBack(APIView):
+    queryset = FeedBack
+    serializer_class = PostFeedBackRenterSerializers
+
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
 
@@ -73,6 +76,9 @@ class GetFeedBack(generics.ListAPIView):
 
 
 class GetUserFeedBack(APIView):
+    queryset = FeedBack
+    serializer_class = GetOrUpdateFeedBackSerializers
+
     def get(self, request: Request, user_id) -> Response:
         user = get_object_or_404(User, id=self.kwargs["user_id"])
         borrowed = Borrowed.objects.filter(user=user.id)
@@ -89,6 +95,9 @@ class GetUserFeedBack(APIView):
 
 
 class GetBookFeedBack(APIView):
+    queryset = FeedBack
+    serializer_class = GetOrUpdateFeedBackSerializers
+
     def get(self, request: Request, book_id) -> Response:
         book = get_object_or_404(Book, id=self.kwargs["book_id"])
         borrowed = Borrowed.objects.filter(book=book.id)

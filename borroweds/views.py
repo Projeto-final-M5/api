@@ -26,6 +26,15 @@ class BorrrowedCreateView(CreateAPIView):
 
     def perform_create(self, serializer):
         book_instance = get_object_or_404(Book, id=self.kwargs["pk"])
+        data_now = dt.now(timezone.utc).date()
+        data = (
+            dt.strptime(self.request.data["finish_date"], "%Y-%m-%d").date() - data_now
+        )
+        if data.days < 1:
+            raise CustomForbidenError(
+                f"Thats not a valid date, needs to be greater than {data_now}"
+            )
+        total_price = data.days * book_instance.price
 
         book_instance.available = False
         book_instance.save()
