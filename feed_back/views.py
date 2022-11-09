@@ -39,6 +39,20 @@ class PostFeedBack(APIView):
             )
         if feed_back:
             feed = FeedBack.objects.get(borrowed=borrowed.id)
+            if serializer == PostFeedBackOwnerSerializers and (
+                feed.stars_owner or feed.rating_owner
+            ):
+                return Response(
+                    {"msg": "you already replied to the feed Back"},
+                    status.HTTP_400_BAD_REQUEST,
+                )
+            elif serializer == PostFeedBackRenterSerializers and (
+                feed.stars_renter or feed.rating_renter
+            ):
+                return Response(
+                    {"msg": "you already replied to the feed Back"},
+                    status.HTTP_400_BAD_REQUEST,
+                )
             Serializer = serializer(
                 feed,
                 data=request.data,

@@ -50,6 +50,8 @@ THIRD_PARTY_APPS = [
 ]
 
 MY_APPS = [
+    "payment",
+    "paypal.standard.ipn",
     "users",
     "addresses",
     "borroweds",
@@ -183,3 +185,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "users.User"
 
 django_on_heroku.settings(locals())
+
+# paypal
+
+PAYPAL_TEST = True
+PAYPAL_RECEIVER_EMAIL = "LucasOCara@gmail.com"
