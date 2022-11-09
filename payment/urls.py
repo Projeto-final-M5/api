@@ -3,7 +3,6 @@ from . import views
 
 
 urlpatterns = [
-    path("", views.home, name="home"),
-    path("paypal-return", views.paypal_return, name="paypal_return"),
-    path("paypal-cancel", views.paypal_cancel, name="paypal_cancel"),
+    path("payment/<pk>/", views.Payment.as_view()),
+    path("payment/<book_id>/<user_id>/", views.home, name="home"),
 ]
