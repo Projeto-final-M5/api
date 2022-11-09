@@ -14,10 +14,10 @@ class AddressModelTest(TestCase):
     def setUpTestData(cls):
         cls.user_data = mock_user
         cls.address_data = mock_address
-        
+
         cls.user = User.objects.create_user(**cls.user_data)
         cls.address = Address.objects.create(**{**cls.address_data, "user": cls.user})
-        
+
     def test_address_model(self):
         address = Address.objects.get(id=self.address.id)
 
@@ -37,36 +37,33 @@ class AddressModelTest(TestCase):
         self.assertEqual(id.default, uuid4)
         self.assertTrue(id.primary_key)
         self.assertFalse(id.editable)
-        
+
         self.assertTrue(state.max_length, 100)
         self.assertFalse(state.null)
         self.assertFalse(state.blank)
-        self.assertEqual(state.default, "None")
 
         self.assertTrue(city.max_length, 100)
         self.assertFalse(city.null)
         self.assertFalse(city.blank)
-        self.assertEqual(city.default, "None")
 
         self.assertTrue(district.max_length, 100)
         self.assertFalse(district.null)
         self.assertFalse(district.blank)
-        
+
         self.assertTrue(place.max_length, 100)
         self.assertFalse(place.null)
         self.assertFalse(place.blank)
-        self.assertEqual(place.default, "None")
-        
+
         self.assertTrue(number.max_length, 100)
         self.assertFalse(number.null)
         self.assertFalse(number.blank)
-        
+
         self.assertTrue(zip_code.max_length, 8)
         self.assertFalse(zip_code.null)
         self.assertFalse(zip_code.blank)
-        
+
         self.assertTrue(additional_data.null)
         self.assertTrue(additional_data.blank)
-        
+
         self.assertIsInstance(address.user, User)
         self.assertTrue(address.user, self.user)
